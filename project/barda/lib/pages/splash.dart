@@ -1,10 +1,12 @@
-import 'package:barda/pages/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './login.dart';
+import "../extensions/string_extension.dart";
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import '../services/auth.dart';
+
 // Splash
 // Contains the splash screen or the landing page for the app. Here, the user logs in on registers
 
@@ -16,12 +18,6 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  bool isAuth = false;
-
-  buildAuthScreen() {
-    return const Text('auth');
-  }
-
   Future userLogin(String username, String password) async {
     final res = await http.post(
         Uri.parse('https://cmsc-23-2022-bfv6gozoca-as.a.run.app/api/login'),
@@ -37,12 +33,10 @@ class _SplashState extends State<Splash> {
 
     var jsonData = jsonDecode(res.body);
     if (jsonData['success'] == true) {
-      return jsonData['data']['token'];
-    } else {
-      return;
+      String token = jsonData['data']['token'];
+      Auth.setToken(token);
     }
-
-    // print(jsonData['data']['token']);
+    return jsonData;
   }
 
   Future userRegister(String username, String password, String firstname,
@@ -60,130 +54,8 @@ class _SplashState extends State<Splash> {
           'firstName': firstname,
           'lastName': lastname
         }));
-
-    // if (res.statusCode == 200) {
     var jsonData = jsonDecode(res.body);
-    print(jsonData);
-    // } else {
-    //   return -1;
-    // }
-  }
-
-  Scaffold buildUnAuthScreen() {
-    return Scaffold(
-        body: Container(
-            // alignment: Alignment.center,
-            decoration:
-                BoxDecoration(color: Theme.of(context).colorScheme.tertiary),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'oras na para\nmakipag-',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 30,
-                              color: Colors.white),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'barda',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 35,
-                                    color: Theme.of(context).primaryColor)),
-                            TextSpan(text: 'han!'),
-                          ],
-                        ),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
-                    child: Row(
-                      children: [
-                        OutlinedButton(
-                            onPressed: () {
-                              setState(() {
-                                loginSheet(context);
-                              });
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.fromLTRB(1, 0, 1, 0),
-                              child: Text(
-                                'log in',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(2000))),
-                              side: BorderSide(
-                                  width: 2,
-                                  color: Theme.of(context).primaryColor),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: TextButton(
-                              onPressed: () {
-                                regSheet(context);
-                                // userRegister('user1', 'pass', 'Sample', 'User');
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                child: Text(
-                                  'create an account',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                              style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(2000))))),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 20, 0, 0),
-                    child: RichText(
-                        text: TextSpan(
-                            text: 'By signing up, you agree to all our ',
-                            style: const TextStyle(
-                                fontSize: 10, color: Colors.white),
-                            children: <TextSpan>[
-                          TextSpan(
-                              text: 'conditions',
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.w700,
-                                  decoration: TextDecoration.underline,
-                                  decorationThickness: 2,
-                                  decorationColor:
-                                      Theme.of(context).colorScheme.secondary))
-                        ])),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 30, top: 300, bottom: 50),
-                    child: Text(
-                      'Made by: Marlo Fiel Mancenido',
-                      style: TextStyle(
-                          fontSize: 8,
-                          color: Theme.of(context).colorScheme.secondary),
-                      textAlign: TextAlign.left,
-                    ),
-                  )
-                ])));
+    return jsonData;
   }
 
   loginSheet(BuildContext context) {
@@ -274,10 +146,50 @@ class _SplashState extends State<Splash> {
                     Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                userLogin(username, password).then((value) =>
-                                    value != null ? isAuth = true : null);
+                                var response =
+                                    await userLogin(username, password);
+                                if (response['success']) {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, '/home');
+                                } else {
+                                  var statusCode = response['statusCode'];
+                                  var message = response['message']
+                                      .toString()
+                                      .toCapitalized();
+                                  Navigator.pop(context);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: RichText(
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
+                                              text: 'Error $statusCode.',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Colors.white),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: ' $message.',
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.white)),
+                                              ],
+                                            ),
+                                          ),
+                                          behavior: SnackBarBehavior.floating,
+                                          padding: const EdgeInsets.all(20),
+                                          backgroundColor: Colors.red,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8));
+                                  // Navigator.pop(context);
+                                }
                               }
                               ;
                             },
@@ -437,12 +349,54 @@ class _SplashState extends State<Splash> {
                     Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                userRegister(
+                                var response = await userRegister(
                                     username, password, firstName, lastName);
-                                // userLogin(username, password).then((value) =>
-                                //     value != null ? isAuth = true : null);
+                                var status, message, color;
+
+                                if (response['success']) {
+                                  status = 'Success!';
+                                  color = Colors.green;
+                                  message = 'Account successfully created!';
+                                } else {
+                                  var code = response['statusCode'];
+                                  status =
+                                      'Account creation failed. Error $code';
+                                  color = Colors.red;
+                                  message = response['message'];
+                                }
+
+                                message = message.toString().toCapitalized();
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                            text: '$status',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                color: Colors.white),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: ' $message',
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.white)),
+                                            ],
+                                          ),
+                                        ),
+                                        behavior: SnackBarBehavior.floating,
+                                        padding: const EdgeInsets.all(20),
+                                        backgroundColor: color,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.8));
                               }
                               ;
                             },
@@ -471,6 +425,120 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return isAuth ? buildAuthScreen() : buildUnAuthScreen();
+    return Scaffold(
+        body: Container(
+            // alignment: Alignment.center,
+            decoration:
+                BoxDecoration(color: Theme.of(context).colorScheme.tertiary),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'oras na para\nmakipag-',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 30,
+                              color: Colors.white),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'barda',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 35,
+                                    color: Theme.of(context).primaryColor)),
+                            const TextSpan(text: 'han!'),
+                          ],
+                        ),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
+                    child: Row(
+                      children: <Widget>[
+                        OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                loginSheet(context);
+                              });
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.fromLTRB(1, 0, 1, 0),
+                              child: Text(
+                                'log in',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2000))),
+                              side: BorderSide(
+                                  width: 2,
+                                  color: Theme.of(context).primaryColor),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: TextButton(
+                              onPressed: () {
+                                regSheet(context);
+                                // userRegister('user1', 'pass', 'Sample', 'User');
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: Text(
+                                  'create an account',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(2000))))),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 20, 0, 0),
+                    child: RichText(
+                        text: TextSpan(
+                            text: 'By signing up, you agree to all our ',
+                            style: const TextStyle(
+                                fontSize: 10, color: Colors.white),
+                            children: <TextSpan>[
+                          TextSpan(
+                              text: 'conditions',
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w700,
+                                  decoration: TextDecoration.underline,
+                                  decorationThickness: 2,
+                                  decorationColor:
+                                      Theme.of(context).colorScheme.secondary))
+                        ])),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 30, top: 300, bottom: 50),
+                    child: Text(
+                      'Made by: Marlo Fiel Mancenido',
+                      style: TextStyle(
+                          fontSize: 8,
+                          color: Theme.of(context).colorScheme.secondary),
+                      textAlign: TextAlign.left,
+                    ),
+                  )
+                ])));
+    ;
   }
 }

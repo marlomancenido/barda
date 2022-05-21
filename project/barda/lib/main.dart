@@ -1,4 +1,6 @@
+import 'package:barda/pages/home.dart';
 import 'package:barda/pages/splash.dart';
+import 'package:barda/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,7 +23,19 @@ class MyApp extends StatelessWidget {
               secondary: const Color.fromRGBO(255, 196, 221, 1),
               primary: const Color.fromRGBO(44, 19, 221, 1),
               tertiary: const Color.fromRGBO(28, 26, 27, 1))),
-      home: const Splash(),
+      home: FutureBuilder(
+        future: Auth.getToken(),
+        builder: (_, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasData) {
+            return Home();
+          } else {
+            return Splash();
+          }
+        },
+      ),
+      routes: {'/home': (_) => const Home(), '/splash': (_) => const Splash()},
     );
   }
 }
