@@ -1,7 +1,9 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../extensions/string_extension.dart';
-import 'package:barda/services/auth.dart';
+import 'package:barda/pages/create.dart';
+import 'package:barda/pages/feed.dart';
+import 'package:barda/pages/friends.dart';
+import 'package:barda/pages/profile.dart';
+import 'package:barda/pages/search.dart';
+
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -12,63 +14,86 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Future userLogout(String token) async {
-    final res = await http.post(
-        Uri.parse('https://cmsc-23-2022-bfv6gozoca-as.a.run.app/api/logout'),
-        headers: <String, String>{
-          'Authorization': 'Bearer $token',
-        });
+  late PageController pageController;
+  int pageIndex = 0;
 
-    var jsonData = jsonDecode(res.body);
-    if (jsonData['success'] == true) {
-      Auth.removeToken();
-    }
-    return jsonData;
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  onPageChanged(int pageIndex) {
+    setState(() {
+      this.pageIndex = pageIndex;
+    });
+  }
+
+  onTap(int pageIndex) {
+    pageController.jumpToPage(
+      pageIndex,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-          ElevatedButton(
-            child: Text('Log Out'),
-            onPressed: () async {
-              var token = await Auth.getToken();
-              var response = await userLogout(token);
-
-              if (response['success']) {
-                Navigator.popAndPushNamed(context, '/splash');
-              } else {
-                var statusCode = response['statusCode'];
-                var message = response['message'].toString().toCapitalized();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        text: 'Error $statusCode.',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w800, color: Colors.white),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: ' $message.',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white)),
-                        ],
-                      ),
-                    ),
-                    behavior: SnackBarBehavior.floating,
-                    padding: const EdgeInsets.all(20),
-                    backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                    width: MediaQuery.of(context).size.width * 0.8));
-              }
-            },
-          )
-        ]));
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        body: PageView(
+          children: const <Widget>[
+            Feed(),
+            Search(),
+            Create(),
+            Friends(),
+            Profile()
+          ],
+          controller: pageController,
+          onPageChanged: onPageChanged,
+          physics: NeverScrollableScrollPhysics(),
+        ),
+        bottomNavigationBar: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+          child: BottomNavigationBar(
+              onTap: onTap,
+              iconSize: 30,
+              currentIndex: pageIndex,
+              backgroundColor: Colors.black,
+              type: BottomNavigationBarType.fixed,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              selectedItemColor: Theme.of(context).colorScheme.secondary,
+              unselectedItemColor: Colors.white,
+              items: const [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home_outlined),
+                    activeIcon: Icon(Icons.home),
+                    label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.search_outlined),
+                    activeIcon: Icon(Icons.search),
+                    label: 'Search'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.add_circle_outlined),
+                    activeIcon: Icon(Icons.add_circle),
+                    label: 'Add'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.people_outlined),
+                    activeIcon: Icon(Icons.people),
+                    label: 'Friends'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person_outlined),
+                    activeIcon: Icon(Icons.person),
+                    label: 'User'),
+              ]),
+        ));
   }
 }

@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
         future: Auth.getToken(),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
-            return Home();
+            return const Home();
           } else {
-            return Splash();
+            return const Splash();
           }
         },
       ),
