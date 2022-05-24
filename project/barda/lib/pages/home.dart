@@ -47,13 +47,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         body: PageView(
-          children: const <Widget>[
-            FeedPage(),
-            Search(),
-            Create(),
-            Friends(),
-            Profile()
-          ],
+          children: const <Widget>[FeedPage(), Create(), Profile()],
           controller: pageController,
           onPageChanged: onPageChanged,
           physics: NeverScrollableScrollPhysics(),
@@ -79,17 +73,9 @@ class _HomeState extends State<Home> {
                     activeIcon: Icon(Icons.home),
                     label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.search_outlined),
-                    activeIcon: Icon(Icons.search),
-                    label: 'Search'),
-                BottomNavigationBarItem(
                     icon: Icon(Icons.add_circle_outlined),
                     activeIcon: Icon(Icons.add_circle),
                     label: 'Add'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.people_outlined),
-                    activeIcon: Icon(Icons.people),
-                    label: 'Friends'),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person_outlined),
                     activeIcon: Icon(Icons.person),

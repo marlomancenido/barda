@@ -72,3 +72,16 @@ Future<int> getNoFollowers() async {
   var friends = await getFriends();
   return friends.length;
 }
+
+Future getAuthUserData() async {
+  final username = await Auth.getUsername();
+  final friends = await getFriends();
+  final count = friends.length;
+
+  return {'username': username, 'followers_count': count};
+}
+
+Future isFriends(String username) async {
+  final friends = await getFriends();
+  return friends.contains(username);
+}

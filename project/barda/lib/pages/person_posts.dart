@@ -1,32 +1,33 @@
-import 'dart:convert';
-
-import 'package:barda/services/feed_getter.dart';
-import 'package:barda/widgets/post_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import '../models/post.dart';
+import 'dart:convert';
+
 import '../models/user.dart';
 import '../services/auth.dart';
-import 'package:http/http.dart' as http;
+import '../widgets/post_container.dart';
 
-class Feed extends StatefulWidget {
-  const Feed({Key? key}) : super(key: key);
+class PersonPosts extends StatefulWidget {
+  final String username;
+
+  const PersonPosts(this.username);
 
   @override
-  State<Feed> createState() => _FeedState();
+  State<PersonPosts> createState() => _PersonPostsState();
 }
 
-class _FeedState extends State<Feed> {
+class _PersonPostsState extends State<PersonPosts> {
   late Future<List<Post>> _posts;
 
-  Future<List<Post>> getPosts() async {
+  Future<List<Post>> getUserPosts() async {
     // Retrieve Token and Username
-    final token = await Auth.getToken(), username = await Auth.getUsername();
+    final token = await Auth.getToken(),
+        auth_user = await Auth.getUsername(),
+        username = widget.username,
+        is_friends = await isFriends(widget.username);
 
     List<Post> posts = [];
-    List<String> friends = await getFriends();
-
     final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/post');
     final res = await http.get(
       uri,
@@ -48,11 +49,10 @@ class _FeedState extends State<Feed> {
           date: date,
           updated: p['updated']);
 
-      // If public/friend/self, add to feed
-      if (p['public'] ||
-          friends.contains(p['username']) ||
-          p['username'] == username) {
-        posts.add(post);
+      if (p['username'] == username) {
+        if (p['public'] || is_friends || p['username'] == auth_user) {
+          posts.add(post);
+        }
       }
     }
 
@@ -62,7 +62,7 @@ class _FeedState extends State<Feed> {
   @override
   void initState() {
     super.initState();
-    _posts = getPosts();
+    _posts = getUserPosts();
   }
 
   @override
@@ -79,7 +79,7 @@ class _FeedState extends State<Feed> {
                 children: [
                   Expanded(
                       child: Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20),
+                    padding: EdgeInsets.only(left: 0, right: 0),
                     child: ListView.builder(
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
@@ -94,18 +94,5 @@ class _FeedState extends State<Feed> {
             }
           }),
     );
-
-    // return Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     Text('Feed'),
-    //     generatepost(context, posts[0]),
-    //     ElevatedButton(
-    //         onPressed: () async {
-    //           getPosts(null, '', '');
-    //         },
-    //         child: Text('Press Me'))
-    //   ],
-    // );
   }
 }

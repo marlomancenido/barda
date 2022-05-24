@@ -499,7 +499,7 @@ class _SplashState extends State<Splash> {
                               style: TextButton.styleFrom(
                                   backgroundColor:
                                       Theme.of(context).colorScheme.primary,
-                                  shape: const RoundedRectangleBorder(
+                                  shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(2000))))),
                         )

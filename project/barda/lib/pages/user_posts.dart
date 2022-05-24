@@ -1,32 +1,27 @@
-import 'dart:convert';
-
-import 'package:barda/services/feed_getter.dart';
-import 'package:barda/widgets/post_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../models/post.dart';
-import '../models/user.dart';
-import '../services/auth.dart';
 import 'package:http/http.dart' as http;
+import '../models/post.dart';
+import 'dart:convert';
 
-class Feed extends StatefulWidget {
-  const Feed({Key? key}) : super(key: key);
+import '../services/auth.dart';
+import '../widgets/post_container.dart';
+
+class UserPosts extends StatefulWidget {
+  const UserPosts({Key? key}) : super(key: key);
 
   @override
-  State<Feed> createState() => _FeedState();
+  State<UserPosts> createState() => _UserPostsState();
 }
 
-class _FeedState extends State<Feed> {
+class _UserPostsState extends State<UserPosts> {
   late Future<List<Post>> _posts;
 
-  Future<List<Post>> getPosts() async {
+  Future<List<Post>> getUserPosts() async {
     // Retrieve Token and Username
     final token = await Auth.getToken(), username = await Auth.getUsername();
 
     List<Post> posts = [];
-    List<String> friends = await getFriends();
-
     final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/post');
     final res = await http.get(
       uri,
@@ -48,10 +43,7 @@ class _FeedState extends State<Feed> {
           date: date,
           updated: p['updated']);
 
-      // If public/friend/self, add to feed
-      if (p['public'] ||
-          friends.contains(p['username']) ||
-          p['username'] == username) {
+      if (p['username'] == username) {
         posts.add(post);
       }
     }
@@ -62,7 +54,7 @@ class _FeedState extends State<Feed> {
   @override
   void initState() {
     super.initState();
-    _posts = getPosts();
+    _posts = getUserPosts();
   }
 
   @override
@@ -79,7 +71,7 @@ class _FeedState extends State<Feed> {
                 children: [
                   Expanded(
                       child: Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20),
+                    padding: EdgeInsets.only(left: 0, right: 0),
                     child: ListView.builder(
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
@@ -94,18 +86,5 @@ class _FeedState extends State<Feed> {
             }
           }),
     );
-
-    // return Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     Text('Feed'),
-    //     generatepost(context, posts[0]),
-    //     ElevatedButton(
-    //         onPressed: () async {
-    //           getPosts(null, '', '');
-    //         },
-    //         child: Text('Press Me'))
-    //   ],
-    // );
   }
 }

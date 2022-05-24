@@ -1,5 +1,12 @@
 import 'package:barda/models/post.dart';
+import 'package:barda/pages/home.dart';
+import 'package:barda/pages/person.dart';
+import 'package:barda/pages/post.dart';
+import 'package:barda/pages/profile.dart';
+import 'package:barda/services/auth.dart';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 Widget generatepost(context, Post post) {
   // Initializing Icon
@@ -7,6 +14,9 @@ Widget generatepost(context, Post post) {
   if (post.public) {
     icon = Icons.public;
   }
+
+  var date = DateFormat.yMMMMd('en_US').format(post.date),
+      time = DateFormat.jm().format(post.date);
 
   return Container(
     height: 120,
@@ -40,8 +50,9 @@ Widget generatepost(context, Post post) {
                     ],
                   )),
             ),
-            onTap: () {
-              print('Name tapped');
+            onTap: () async {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Person(post.username)));
             },
           )),
       Expanded(
@@ -54,15 +65,34 @@ Widget generatepost(context, Post post) {
           child: Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
               child: InkWell(
-                child: Text(
-                  post.text,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, color: Colors.white),
+                child: Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          post.text,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, color: Colors.white),
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '$time • $date',
+                            style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey),
+                          )),
+                    )
+                  ],
                 ),
                 onTap: () {
                   // Go to Post Page
-                  print("Tapped!!!");
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => PostPage(post)));
                 },
               )),
         ),

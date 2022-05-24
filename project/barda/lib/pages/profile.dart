@@ -1,4 +1,5 @@
 import 'package:barda/models/user.dart';
+import 'package:barda/pages/user_posts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  late Future<List<Post>> _posts;
+  late dynamic _authuserdata;
 
   String firstName = 'Leni', lastName = 'Robredo';
   int friends_count = 31000000;
@@ -25,7 +26,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    _posts = getUserPosts();
+    _authuserdata = getAuthUserData();
   }
 
   getShortForm(int numbers) {
@@ -55,19 +56,20 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    // var friendCount = getShortForm(noFollowers);
-
     // For testing Only
-    int sample = 1653237558673422;
-    var newDate = dateTimeFromStamp(sample);
-    print(DateFormat.jm().format(newDate));
+    // int sample = 1653237558673422;
+    // var newDate = dateTimeFromStamp(sample);
+    // print(DateFormat.jm().format(newDate));
 
     return DefaultTabController(
         length: 2,
         child: FutureBuilder(
-          future: _posts,
+          future: _authuserdata,
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
+              final username = snapshot.data['username'];
+              final display_followers =
+                  getShortForm(snapshot.data['followers_count']);
               return Scaffold(
                   backgroundColor: Theme.of(context).colorScheme.tertiary,
                   body: Column(
@@ -104,14 +106,14 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text(
-                        '$firstName $lastName',
+                        '@$username',
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).colorScheme.secondary),
                       ),
                       Text(
-                        ' friends',
+                        '$display_followers friends',
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -120,7 +122,7 @@ class _ProfileState extends State<Profile> {
                       Expanded(
                         child: Padding(
                           padding:
-                              EdgeInsets.only(left: 30, right: 30, top: 30),
+                              EdgeInsets.only(left: 20, right: 20, top: 30),
                           child: Column(
                             children: [
                               TabBar(
@@ -144,7 +146,7 @@ class _ProfileState extends State<Profile> {
                                   child: TabBarView(
                                 physics: NeverScrollableScrollPhysics(),
                                 children: [
-                                  Text('User posts'),
+                                  UserPosts(),
                                   Column(
                                     children: [
                                       Padding(
