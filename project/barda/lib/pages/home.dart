@@ -1,5 +1,6 @@
 import 'package:barda/pages/create.dart';
 import 'package:barda/pages/feed.dart';
+import 'package:barda/pages/feed_page.dart';
 import 'package:barda/pages/friends.dart';
 import 'package:barda/pages/profile.dart';
 import 'package:barda/pages/search.dart';
@@ -47,7 +48,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         body: PageView(
           children: const <Widget>[
-            Feed(),
+            FeedPage(),
             Search(),
             Create(),
             Friends(),

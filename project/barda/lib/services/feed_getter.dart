@@ -1,20 +1,21 @@
 import 'dart:convert';
-
-import 'package:barda/services/user.dart';
+import 'package:barda/models/user.dart';
 
 import '../models/post.dart';
 import 'auth.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Post>> getPosts(int? limit, String? next, String? previous) async {
-  // Retrieve Token
-  final token = await Auth.getToken();
+  // Retrieve Token and Generate User
+  final token = await Auth.getToken(), username = await Auth.getUsername();
+
+  User user = User(username);
 
   // Query
   // final query = {'limit': limit, 'next': next, 'previous': previous};
 
   List<Post> posts = [];
-  List<String> friendsUN = await getFriendsUN();
+  List<String> friendsUN = await getFriends();
 
   final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/post');
   final res = await http.get(
@@ -37,18 +38,13 @@ Future<List<Post>> getPosts(int? limit, String? next, String? previous) async {
         date: date,
         updated: p['updated']);
 
-    // If public, add to feed
-    if (p['public']) {
-      posts.add(post);
-    } else if (friendsUN.contains(p['username'])) {
+    // If public/friend/self, add to feed
+    if (p['public'] ||
+        friendsUN.contains(p['username']) ||
+        p['username'] == username) {
       posts.add(post);
     }
-    // To Do:
-    // Else if self, add to feed
-
   }
 
   return posts;
-
-  // print(posts);
 }

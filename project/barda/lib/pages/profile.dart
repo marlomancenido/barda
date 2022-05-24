@@ -1,3 +1,4 @@
+import 'package:barda/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +7,7 @@ import 'package:barda/services/auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../services/user.dart';
+import '../models/post.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -16,14 +17,15 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  late Future<int> _noFollowers;
+  late Future<List<Post>> _posts;
 
   String firstName = 'Leni', lastName = 'Robredo';
+  int friends_count = 31000000;
 
   @override
   void initState() {
     super.initState();
-    _noFollowers = userFollowers();
+    _posts = getUserPosts();
   }
 
   getShortForm(int numbers) {
@@ -63,10 +65,9 @@ class _ProfileState extends State<Profile> {
     return DefaultTabController(
         length: 2,
         child: FutureBuilder(
-          future: _noFollowers,
+          future: _posts,
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              var friendCount = getShortForm(snapshot.data);
               return Scaffold(
                   backgroundColor: Theme.of(context).colorScheme.tertiary,
                   body: Column(
@@ -110,7 +111,7 @@ class _ProfileState extends State<Profile> {
                             color: Theme.of(context).colorScheme.secondary),
                       ),
                       Text(
-                        '$friendCount friends',
+                        ' friends',
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -293,7 +294,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   ));
             } else {
-              return CupertinoActivityIndicator();
+              return CupertinoActivityIndicator(color: Colors.white);
             }
           },
         ));

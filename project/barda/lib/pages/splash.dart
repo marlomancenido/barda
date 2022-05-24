@@ -34,7 +34,7 @@ class _SplashState extends State<Splash> {
     var jsonData = jsonDecode(res.body);
     if (jsonData['success'] == true) {
       String token = jsonData['data']['token'];
-      Auth.setToken(token);
+      Auth.setToken(token, username);
     }
     return jsonData;
   }
