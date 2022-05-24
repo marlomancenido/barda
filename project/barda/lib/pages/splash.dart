@@ -474,7 +474,7 @@ class _SplashState extends State<Splash> {
                               ),
                             ),
                             style: OutlinedButton.styleFrom(
-                              shape: const RoundedRectangleBorder(
+                              shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(2000))),
                               side: BorderSide(
@@ -486,7 +486,6 @@ class _SplashState extends State<Splash> {
                           child: TextButton(
                               onPressed: () {
                                 regSheet(context);
-                                // userRegister('user1', 'pass', 'Sample', 'User');
                               },
                               child: const Padding(
                                 padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
