@@ -1,3 +1,4 @@
+import 'package:barda/models/user.dart';
 import 'package:barda/pages/feed.dart';
 import 'package:flutter/material.dart';
 

@@ -44,30 +44,6 @@ Future<List<Post>> getUserPosts() async {
   return posts;
 }
 
-Future<List<String>> getFriends() async {
-  List<String> friends = [];
-
-  // Retrieve Token
-  final token = await Auth.getToken();
-
-  final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/user');
-  final res = await http.get(
-    uri,
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token'
-    },
-  );
-
-  var jsonData = jsonDecode(res.body);
-
-  for (var u in jsonData['data']) {
-    friends.add(u['username']);
-  }
-
-  return friends;
-}
-
 Future<int> getNoFollowers() async {
   var friends = await getFriends();
   return friends.length;
@@ -84,4 +60,32 @@ Future getAuthUserData() async {
 Future isFriends(String username) async {
   final friends = await getFriends();
   return friends.contains(username);
+}
+
+Future<List<String>> getFriends() async {
+  List<String> friends = [];
+
+  // Retrieve Token
+  final token = await Auth.getToken();
+
+  // Query
+  Map<String, dynamic> query = {'friends': 'true'};
+
+  final uri =
+      Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/user', query);
+  final res = await http.get(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token'
+    },
+  );
+
+  var jsonData = jsonDecode(res.body);
+
+  for (var u in jsonData['data']) {
+    friends.add(u['username']);
+  }
+
+  return friends;
 }
