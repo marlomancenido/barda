@@ -340,9 +340,8 @@ class _PostPageState extends State<PostPage> {
                                     var response = await deletePost(id);
 
                                     if (response['success']) {
-                                      setState(() {
-                                        Navigator.pop(context);
-                                      });
+                                      Navigator.pop(context);
+                                      setState(() {});
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                               content: RichText(

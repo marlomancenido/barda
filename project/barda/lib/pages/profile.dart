@@ -1,6 +1,7 @@
 import 'package:barda/models/user.dart';
 import 'package:barda/pages/generate_friends.dart';
 import 'package:barda/pages/user_posts.dart';
+import 'package:barda/widgets/changepass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -39,8 +40,6 @@ class _ProfileState extends State<Profile> {
     return DateTime.fromMicrosecondsSinceEpoch(datetime);
   }
 
-  // Function to get User Details
-
   Future userLogout(String token) async {
     final res = await http.post(
         Uri.parse('https://cmsc-23-2022-bfv6gozoca-as.a.run.app/api/logout'),
@@ -57,11 +56,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    // For testing Only
-    // int sample = 1653237558673422;
-    // var newDate = dateTimeFromStamp(sample);
-    // print(DateFormat.jm().format(newDate));
-
     return DefaultTabController(
         length: 3,
         child: FutureBuilder(
@@ -71,6 +65,8 @@ class _ProfileState extends State<Profile> {
               final username = snapshot.data['username'];
               final display_followers =
                   getShortForm(snapshot.data['followers_count']);
+              final firstName = snapshot.data['firstName'];
+              final lastName = snapshot.data['lastName'];
               return Scaffold(
                   backgroundColor: Theme.of(context).colorScheme.tertiary,
                   body: Column(
@@ -186,41 +182,30 @@ class _ProfileState extends State<Profile> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           )),
-                                      const Card(
+                                      Card(
                                         color: Colors.transparent,
                                         elevation: 0,
                                         child: ListTile(
-                                          trailing: IconButton(
-                                              onPressed: null,
-                                              icon: Icon(Icons.chevron_right,
-                                                  color: Color.fromARGB(
-                                                      255, 190, 190, 190))),
-                                          textColor: Colors.white,
-                                          title: Text('Change Name',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 15,
-                                              )),
-                                          onTap: null,
-                                        ),
-                                      ),
-                                      const Card(
-                                        color: Colors.transparent,
-                                        elevation: 0,
-                                        child: ListTile(
-                                          trailing: IconButton(
-                                              onPressed: null,
-                                              icon: Icon(Icons.chevron_right,
-                                                  color: Color.fromARGB(
-                                                      255, 190, 190, 190))),
-                                          textColor: Colors.white,
-                                          title: Text('Change Password',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 15,
-                                              )),
-                                          onTap: null,
-                                        ),
+                                            trailing: IconButton(
+                                                onPressed: null,
+                                                icon: Icon(Icons.chevron_right,
+                                                    color: Color.fromARGB(
+                                                        255, 190, 190, 190))),
+                                            textColor: Colors.white,
+                                            title: Text('Change Password',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15,
+                                                )),
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ChangePass(
+                                                              username,
+                                                              firstName,
+                                                              lastName)));
+                                            }),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(top: 15),
