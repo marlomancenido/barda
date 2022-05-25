@@ -33,6 +33,7 @@ Future<List<Post>> getUserPosts() async {
         text: p['text'],
         username: p['username'],
         public: p['public'],
+        is_authuser: true,
         date: date,
         updated: p['updated']);
 
@@ -88,4 +89,28 @@ Future<List<String>> getFriends() async {
   }
 
   return friends;
+}
+
+Future followUser(String username) async {
+  // Retrieve Token
+  final token = await Auth.getToken();
+  final user = await Auth.getUsername();
+
+  final uri = Uri.https(
+    'cmsc-23-2022-bfv6gozoca-as.a.run.app',
+    '/api/user/$user',
+  );
+  final res = await http.get(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    },
+  );
+
+  // var jsonData = jsonDecode(res.body);
+  print(res.body);
+
+  // return friends;
 }

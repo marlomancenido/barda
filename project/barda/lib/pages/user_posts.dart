@@ -34,12 +34,18 @@ class _UserPostsState extends State<UserPosts> {
     var jsonData = jsonDecode(res.body);
 
     for (var p in jsonData['data']) {
+      var is_authuser = false;
+
+      if (p['username'] == username) {
+        is_authuser = true;
+      }
       var date = DateTime.fromMillisecondsSinceEpoch(p['date']);
       var post = Post(
           id: p['id'],
           text: p['text'],
           username: p['username'],
           public: p['public'],
+          is_authuser: is_authuser,
           date: date,
           updated: p['updated']);
 

@@ -1,6 +1,6 @@
 class Post {
   String id, text, username;
-  bool public;
+  bool public, is_authuser;
   DateTime date;
   int updated;
 
@@ -9,6 +9,7 @@ class Post {
       required this.text,
       required this.username,
       required this.public,
+      required this.is_authuser,
       required this.date,
       required this.updated});
 
@@ -18,6 +19,7 @@ class Post {
         text: json['text'],
         username: json['username'],
         public: json['public'],
+        is_authuser: json['is_authuser'],
         date: json['date'],
         updated: json['updated']);
   }

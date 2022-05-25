@@ -41,11 +41,18 @@ class _PersonPostsState extends State<PersonPosts> {
 
     for (var p in jsonData['data']) {
       var date = DateTime.fromMillisecondsSinceEpoch(p['date']);
+      var is_authuser = false;
+
+      if (p['username'] == auth_user) {
+        is_authuser = true;
+      }
+
       var post = Post(
           id: p['id'],
           text: p['text'],
           username: p['username'],
           public: p['public'],
+          is_authuser: is_authuser,
           date: date,
           updated: p['updated']);
 
