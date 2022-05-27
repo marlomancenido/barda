@@ -22,9 +22,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   late dynamic _authuserdata;
 
-  String firstName = 'Leni', lastName = 'Robredo';
-  int friends_count = 31000000;
-
   @override
   void initState() {
     super.initState();
@@ -103,14 +100,14 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Text(
-                        '@$username',
+                        '$firstName $lastName',
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w700,
                             color: Theme.of(context).colorScheme.secondary),
                       ),
                       Text(
-                        '$display_followers friends',
+                        '@$username • $display_followers friends',
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,

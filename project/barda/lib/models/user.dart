@@ -51,9 +51,9 @@ Future<int> getNoFollowers() async {
 }
 
 Future getAuthUserData() async {
-  final username = await Auth.getUsername();
   final friends = await getFriends();
   final count = friends.length;
+  final username = await Auth.getUsername();
 
   // Retrieve Token
   final token = await Auth.getToken();
@@ -72,8 +72,8 @@ Future getAuthUserData() async {
   return {
     'username': username,
     'followers_count': count,
-    'firstName': jsonData['firstName'],
-    'lastName': jsonData['lastName']
+    'firstName': jsonData['data']['firstName'],
+    'lastName': jsonData['data']['lastName']
   };
 }
 
@@ -131,4 +131,41 @@ Future followUser(String username) async {
   print(res.body);
 
   // return friends;
+}
+
+Future getUserData(String username) async {
+  final auth_user = await Auth.getUsername();
+  final friends = await getFriends();
+  final count = friends.length;
+
+  // 0 - Not Friends, 1 - Friends, 2 - isAuthUser
+  int friend_stat = 0;
+
+  if (friends.contains(auth_user)) {
+    friend_stat = 1;
+  } else if (auth_user == username) {
+    friend_stat = 2;
+  }
+
+  // Retrieve Token
+  final token = await Auth.getToken();
+  final uri =
+      Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/user/$username');
+  final res = await http.get(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token'
+    },
+  );
+
+  var jsonData = jsonDecode(res.body);
+
+  return {
+    'username': username,
+    'followers_count': count,
+    'firstName': jsonData['data']['firstName'],
+    'lastName': jsonData['data']['lastName'],
+    'friendStat': friend_stat
+  };
 }

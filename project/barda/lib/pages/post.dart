@@ -5,6 +5,7 @@ import 'package:barda/models/post.dart';
 import 'package:barda/pages/person.dart';
 import 'package:barda/widgets/comments.dart';
 import 'package:barda/widgets/error.dart';
+import 'package:barda/widgets/person_posts.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -506,7 +507,7 @@ class _PostPageState extends State<PostPage> {
                   ),
                 ),
               ),
-            )
+            ),
           ]),
         ));
     ;
