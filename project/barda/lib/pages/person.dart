@@ -1,6 +1,6 @@
 import 'package:barda/extensions/string_extension.dart';
 import 'package:barda/models/user.dart';
-import 'package:barda/pages/person_posts.dart';
+import 'package:barda/widgets/person_posts.dart';
 import 'package:flutter/material.dart';
 
 class Person extends StatefulWidget {
