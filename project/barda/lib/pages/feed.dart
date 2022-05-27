@@ -81,7 +81,6 @@ class _Feed extends State<Feed> {
       }
     } else {
       setState(() {
-        print("no more");
         hasMore = false;
       });
     }

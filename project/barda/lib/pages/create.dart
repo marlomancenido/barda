@@ -1,5 +1,6 @@
 import 'package:barda/extensions/string_extension.dart';
 import 'package:barda/services/auth.dart';
+import 'package:barda/widgets/error.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -161,56 +162,12 @@ class _CreateState extends State<Create> {
                             is_public = true;
                             controller.clear();
                           });
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: RichText(
-                                textAlign: TextAlign.center,
-                                text: const TextSpan(
-                                  text: 'Success!',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.white),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: ' Your post is now posted.',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white)),
-                                  ],
-                                ),
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              padding: const EdgeInsets.all(20),
-                              backgroundColor: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                              width: MediaQuery.of(context).size.width * 0.8));
+                          showSuccess(context, 'Successfully published post!');
                         } else {
                           var statusCode = response['statusCode'];
                           var message =
                               response['message'].toString().toCapitalized();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  text: 'Error $statusCode.',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.white),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: ' $message',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white)),
-                                  ],
-                                ),
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              padding: const EdgeInsets.all(20),
-                              backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                              width: MediaQuery.of(context).size.width * 0.8));
+                          showError(context, statusCode, message);
                         }
                       }),
                 )

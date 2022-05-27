@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:barda/extensions/string_extension.dart';
 import 'package:barda/models/post.dart';
 import 'package:barda/pages/person.dart';
+import 'package:barda/widgets/comments.dart';
+import 'package:barda/widgets/error.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -45,6 +47,25 @@ class _PostPageState extends State<PostPage> {
     final res = await http.delete(
         Uri.parse('https://cmsc-23-2022-bfv6gozoca-as.a.run.app/api/post/$id'),
         headers: <String, String>{'Authorization': 'Bearer $token'});
+
+    var jsonData = jsonDecode(res.body);
+    return jsonData;
+  }
+
+  Future submitComment(String text, String id) async {
+    // Get AuthToken
+    var token = await Auth.getToken();
+
+    final res = await http.post(
+        Uri.parse(
+            'https://cmsc-23-2022-bfv6gozoca-as.a.run.app/api/comment/$id'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode(<String, dynamic>{
+          'text': text,
+        }));
 
     var jsonData = jsonDecode(res.body);
     return jsonData;
@@ -174,68 +195,13 @@ class _PostPageState extends State<PostPage> {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => PostPage(post)));
                                 });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: RichText(
-                                          textAlign: TextAlign.center,
-                                          text: const TextSpan(
-                                            text: 'Success!',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w800,
-                                                color: Colors.white),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text:
-                                                      ' Your post is now posted.',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.white)),
-                                            ],
-                                          ),
-                                        ),
-                                        behavior: SnackBarBehavior.floating,
-                                        padding: const EdgeInsets.all(20),
-                                        backgroundColor: Colors.green,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.8));
+                                showSuccess(context, "Post edited.");
                               } else {
                                 var statusCode = response['statusCode'];
                                 var message = response['message']
                                     .toString()
                                     .toCapitalized();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: RichText(
-                                          textAlign: TextAlign.center,
-                                          text: TextSpan(
-                                            text: 'Error $statusCode.',
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w800,
-                                                color: Colors.white),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: ' $message',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.white)),
-                                            ],
-                                          ),
-                                        ),
-                                        behavior: SnackBarBehavior.floating,
-                                        padding: const EdgeInsets.all(20),
-                                        backgroundColor: Colors.red,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.8));
+                                showError(context, statusCode, message);
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -247,6 +213,96 @@ class _PostPageState extends State<PostPage> {
                               padding: EdgeInsets.all(15),
                               child: Text(
                                 'Edit Post',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                              ),
+                            ),
+                          ))
+                    ])));
+          });
+        });
+  }
+
+  addComment(BuildContext context) {
+    TextEditingController controller = TextEditingController();
+    return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter mystate) {
+            return Container(
+                height: 300,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)),
+                ),
+                child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Column(children: [
+                      Padding(
+                          padding:
+                              EdgeInsets.only(left: 20, right: 20, top: 30),
+                          child: TextField(
+                            controller: controller,
+                            maxLines: 3,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                hintText: 'Enter comment here',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25)),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25)),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      width: 1),
+                                )),
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              var response = await submitComment(
+                                  controller.text, widget.post.id);
+
+                              if (response['success']) {
+                                setState(() {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          PostPage(widget.post)));
+                                });
+                                showSuccess(context, "Comment submitted.");
+                              } else {
+                                var statusCode = response['statusCode'];
+                                var message = response['message']
+                                    .toString()
+                                    .toCapitalized();
+                                showError(context, statusCode, message);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(2000)))),
+                            child: Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Text(
+                                'Submit comment',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     color:
@@ -342,78 +398,14 @@ class _PostPageState extends State<PostPage> {
                                     if (response['success']) {
                                       Navigator.pop(context);
                                       setState(() {});
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: RichText(
-                                                textAlign: TextAlign.center,
-                                                text: const TextSpan(
-                                                  text: 'Success!',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: Colors.white),
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                        text:
-                                                            ' Your post is now deleted.',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color:
-                                                                Colors.white)),
-                                                  ],
-                                                ),
-                                              ),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              padding: const EdgeInsets.all(20),
-                                              backgroundColor: Colors.green,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30)),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.8));
+                                      showSuccess(
+                                          context, 'Post is now deleted.');
                                     } else {
                                       var statusCode = response['statusCode'];
                                       var message = response['message']
                                           .toString()
                                           .toCapitalized();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: RichText(
-                                                textAlign: TextAlign.center,
-                                                text: TextSpan(
-                                                  text: 'Error $statusCode.',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: Colors.white),
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                        text: ' $message',
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color:
-                                                                Colors.white)),
-                                                  ],
-                                                ),
-                                              ),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              padding: const EdgeInsets.all(20),
-                                              backgroundColor: Colors.red,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30)),
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.8));
+                                      showError(context, statusCode, message);
                                     }
                                   },
                                   icon: const Icon(Icons.delete,
@@ -498,6 +490,23 @@ class _PostPageState extends State<PostPage> {
                 ),
               ),
             ]),
+            Comments(id),
+            Padding(
+              padding: EdgeInsets.only(bottom: 50),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    addComment(context);
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+            )
           ]),
         ));
     ;

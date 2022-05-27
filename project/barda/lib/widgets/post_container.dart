@@ -50,7 +50,7 @@ Widget generatepost(context, Post post) {
                     ],
                   )),
             ),
-            onTap: () async {
+            onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => Person(post.username)));
             },
