@@ -1,5 +1,5 @@
 import 'package:barda/models/user.dart';
-import 'package:barda/pages/generate_friends.dart';
+import 'package:barda/widgets/generate_friends.dart';
 import 'package:barda/pages/user_posts.dart';
 import 'package:barda/widgets/changepass.dart';
 import 'package:flutter/cupertino.dart';

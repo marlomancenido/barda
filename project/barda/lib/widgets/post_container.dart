@@ -72,13 +72,14 @@ Widget generatepost(context, Post post) {
                         child: Text(
                           post.text,
                           overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                           style: TextStyle(
                               fontWeight: FontWeight.w600, color: Colors.white),
                         )),
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Align(
-                          alignment: Alignment.centerLeft,
+                          alignment: Alignment.bottomLeft,
                           child: Text(
                             '$time • $date',
                             style: const TextStyle(

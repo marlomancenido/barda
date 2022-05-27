@@ -89,10 +89,9 @@ Future<List<String>> getFriends() async {
   final token = await Auth.getToken();
 
   // Query
-  Map<String, dynamic> query = {'friends': 'true'};
+  // Map<String, dynamic> query = {'friends': 'true'};
 
-  final uri =
-      Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/user', query);
+  final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/user');
   final res = await http.get(
     uri,
     headers: <String, String>{

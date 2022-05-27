@@ -426,6 +426,44 @@ class _PostPageState extends State<PostPage> {
                 ),
               ),
               Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: is_public
+                        ? Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 3),
+                                child: Icon(Icons.public,
+                                    size: 13, color: Colors.grey),
+                              ),
+                              Text(
+                                'Public',
+                                style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey),
+                              )
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 3),
+                                child: Icon(Icons.group,
+                                    size: 13, color: Colors.grey),
+                              ),
+                              Text(
+                                'Friends',
+                                style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey),
+                              )
+                            ],
+                          )),
+              ),
+              Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -439,18 +477,19 @@ class _PostPageState extends State<PostPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '$time • $date',
-                    style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey),
-                  ),
-                ),
-              ),
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '$time • $date',
+                        style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey),
+                      ),
+                    ],
+                  )),
               const Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: Divider(

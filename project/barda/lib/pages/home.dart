@@ -1,9 +1,6 @@
 import 'package:barda/pages/create.dart';
 import 'package:barda/pages/feed.dart';
-import 'package:barda/pages/feed_page.dart';
-import 'package:barda/pages/friends.dart';
 import 'package:barda/pages/profile.dart';
-import 'package:barda/pages/search.dart';
 
 import 'package:flutter/material.dart';
 
@@ -47,7 +44,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         body: PageView(
-          children: const <Widget>[FeedPage(), Create(), Profile()],
+          children: const <Widget>[Feed(), Create(), Profile()],
           controller: pageController,
           onPageChanged: onPageChanged,
           physics: NeverScrollableScrollPhysics(),

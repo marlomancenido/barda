@@ -76,55 +76,6 @@ class _PersonState extends State<Person> {
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).colorScheme.secondary),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(2000)))),
-              child: Padding(
-                padding: EdgeInsets.all(15),
-                child: Text(
-                  'Log Out',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.primary),
-                ),
-              ),
-              onPressed: () async {
-                // var response = await followUser(person_username);
-                followUser(person_username);
-
-                // if (response['success']) {
-                //   Navigator.popAndPushNamed(context, '/splash');
-                // } else {
-                //   var statusCode = response['statusCode'];
-                //   var message = response['message'].toString().toCapitalized();
-                //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //       content: RichText(
-                //         textAlign: TextAlign.center,
-                //         text: TextSpan(
-                //           text: 'Error $statusCode.',
-                //           style: const TextStyle(
-                //               fontWeight: FontWeight.w800, color: Colors.white),
-                //           children: <TextSpan>[
-                //             TextSpan(
-                //                 text: ' $message.',
-                //                 style: const TextStyle(
-                //                     fontWeight: FontWeight.w500,
-                //                     color: Colors.white)),
-                //           ],
-                //         ),
-                //       ),
-                //       behavior: SnackBarBehavior.floating,
-                //       padding: const EdgeInsets.all(20),
-                //       backgroundColor: Colors.red,
-                //       shape: RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(30)),
-                //       width: MediaQuery.of(context).size.width * 0.8));
-                // }
-              },
-            ),
             Expanded(
               child: Padding(
                   padding: EdgeInsets.only(left: 30, right: 30, top: 30),
