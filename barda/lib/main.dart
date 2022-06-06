@@ -2,11 +2,13 @@ import 'package:barda/pages/home.dart';
 import 'package:barda/pages/splash.dart';
 import 'package:barda/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
 }
+
+// MAIN FILE
+// Sets the theme of the app and colorscheme/fontfamily for easy accessing in pages
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

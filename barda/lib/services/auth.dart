@@ -2,6 +2,11 @@ import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// AUTH SERVICES
+// Handles authorization, setting and retrieval of tokens (username, token)
+// and logging out or deauthorization.
+// Uses the Flutter Session package.
+
 class Auth {
   static final SESSION = FlutterSession();
 

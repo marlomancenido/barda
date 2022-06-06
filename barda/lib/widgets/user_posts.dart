@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/post.dart';
 import 'dart:convert';
-
 import '../services/auth.dart';
 import 'post_container.dart';
+
+// USER POSTS WIDGET
+// Contains the auth user's posts. Generates the posts by getting all their posts.
+// Handles retrieval for posts.
 
 class UserPosts extends StatefulWidget {
   const UserPosts({Key? key}) : super(key: key);
@@ -20,6 +23,8 @@ class _UserPostsState extends State<UserPosts> {
   final controller = ScrollController();
   bool hasMore = true;
 
+  // Get User Posts
+  // Modified version of getPosts from Feed. Generates posts of the user.
   Future getUserPosts() async {
     // Retrieve Token and Username
     final token = await Auth.getToken(), username = await Auth.getUsername();
@@ -79,6 +84,8 @@ class _UserPostsState extends State<UserPosts> {
     super.dispose();
   }
 
+  // Refresh Feed
+  // Handles refreshing posts. Called when pulled.
   Future refreshFeed() async {
     setState(() {
       hasMore = true;
@@ -91,7 +98,6 @@ class _UserPostsState extends State<UserPosts> {
   @override
   Widget build(BuildContext context) {
     return Scrollbar(
-        thumbVisibility: true,
         controller: controller,
         child: RefreshIndicator(
             onRefresh: refreshFeed,
@@ -101,17 +107,17 @@ class _UserPostsState extends State<UserPosts> {
                 itemBuilder: (context, index) {
                   if (index < posts.length) {
                     return Padding(
-                      padding: EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.only(bottom: 10),
                       child: generatepost(context, posts[index]),
                     );
                   } else {
                     return Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 20),
+                        padding: const EdgeInsets.only(top: 10, bottom: 20),
                         child: hasMore
                             ? CupertinoActivityIndicator(
                                 color: Theme.of(context).colorScheme.secondary,
                               )
-                            : Align(
+                            : const Align(
                                 alignment: Alignment.center,
                                 child: Text("No more posts",
                                     style: TextStyle(

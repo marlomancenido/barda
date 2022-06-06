@@ -10,7 +10,10 @@ import 'package:barda/services/auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../models/post.dart';
+// PROFILE PAGE
+// Displays auth user's profile. Contains list of friends/following, posts, and settings
+// for logging out and changing password.
+// Contains function for handling logout.
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -28,15 +31,16 @@ class _ProfileState extends State<Profile> {
     _authuserdata = getAuthUserData();
   }
 
+  // Get Short Form
+  // Should the user's number of followers be long, this gets its short form.
+  // ex: 15390200 -> 15.3M
   getShortForm(int numbers) {
     var f = NumberFormat.compact(locale: "en_US");
     return f.format(numbers);
   }
 
-  dateTimeFromStamp(int datetime) {
-    return DateTime.fromMicrosecondsSinceEpoch(datetime);
-  }
-
+  // User Logout
+  // Logs out the user. Returns response body for success/error handling
   Future userLogout(String token) async {
     final res = await http.post(
         Uri.parse('https://cmsc-23-2022-bfv6gozoca-as.a.run.app/api/logout'),
@@ -108,26 +112,26 @@ class _ProfileState extends State<Profile> {
                       ),
                       Text(
                         '@$username • $display_followers friends',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
                             color: Colors.white),
                       ),
                       Expanded(
                         child: Padding(
-                          padding:
-                              EdgeInsets.only(left: 20, right: 20, top: 30),
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 30),
                           child: Column(
                             children: [
                               TabBar(
                                 isScrollable: false,
-                                labelPadding: EdgeInsets.all(10),
+                                labelPadding: const EdgeInsets.all(10),
                                 indicatorColor:
                                     Theme.of(context).colorScheme.secondary,
                                 labelColor:
                                     Theme.of(context).colorScheme.secondary,
                                 unselectedLabelColor: Colors.white,
-                                tabs: [
+                                tabs: const [
                                   Text(
                                     'Posts',
                                     style:
@@ -139,13 +143,15 @@ class _ProfileState extends State<Profile> {
                               ),
                               Expanded(
                                   child: TabBarView(
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 children: [
-                                  UserPosts(),
+                                  // UserPosts generates the posts by the user and the pagination.
+                                  // This is from user_posts in the widgets folder
+                                  const UserPosts(),
                                   Column(
                                     children: [
                                       Padding(
-                                          padding: EdgeInsets.only(
+                                          padding: const EdgeInsets.only(
                                               top: 20, left: 20),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
@@ -159,13 +165,17 @@ class _ProfileState extends State<Profile> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           )),
-                                      GenFriends()
+
+                                      // Gen Friends
+                                      // Generates the list of friends by the user. This
+                                      // is from generate_friends under the widgets folder.
+                                      const GenFriends()
                                     ],
                                   ),
                                   Column(
                                     children: [
                                       Padding(
-                                          padding: EdgeInsets.only(
+                                          padding: const EdgeInsets.only(
                                               top: 20, bottom: 10, left: 20),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
@@ -183,13 +193,13 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.transparent,
                                         elevation: 0,
                                         child: ListTile(
-                                            trailing: IconButton(
+                                            trailing: const IconButton(
                                                 onPressed: null,
                                                 icon: Icon(Icons.chevron_right,
                                                     color: Color.fromARGB(
                                                         255, 190, 190, 190))),
                                             textColor: Colors.white,
-                                            title: Text('Change Password',
+                                            title: const Text('Change Password',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 15,
@@ -205,17 +215,18 @@ class _ProfileState extends State<Profile> {
                                             }),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(top: 15),
+                                        padding: const EdgeInsets.only(top: 15),
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               primary: Colors.white,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(
-                                                              2000)))),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  2000)))),
                                           child: Padding(
-                                            padding: EdgeInsets.all(15),
+                                            padding: const EdgeInsets.all(15),
                                             child: Text(
                                               'Log Out',
                                               style: TextStyle(
@@ -300,7 +311,7 @@ class _ProfileState extends State<Profile> {
                     ],
                   ));
             } else {
-              return CupertinoActivityIndicator(color: Colors.white);
+              return const CupertinoActivityIndicator(color: Colors.white);
             }
           },
         ));

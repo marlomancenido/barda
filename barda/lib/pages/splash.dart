@@ -2,10 +2,8 @@ import 'package:barda/widgets/error.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "../extensions/string_extension.dart";
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
 import '../services/auth.dart';
 
 // Splash
@@ -179,7 +177,7 @@ class _SplashState extends State<Splash> {
                                 alignment: Alignment.centerLeft,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.primary,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(2000)))),
                             child: const Padding(
@@ -358,8 +356,8 @@ class _SplashState extends State<Splash> {
                                 alignment: Alignment.centerLeft,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.primary,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: const BorderRadius.all(
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
                                         Radius.circular(2000)))),
                             child: const Padding(
                               padding: EdgeInsets.only(left: 10, right: 10),
@@ -428,7 +426,7 @@ class _SplashState extends State<Splash> {
                               ),
                             ),
                             style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(2000))),
                               side: BorderSide(
@@ -453,7 +451,7 @@ class _SplashState extends State<Splash> {
                               style: TextButton.styleFrom(
                                   backgroundColor:
                                       Theme.of(context).colorScheme.primary,
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(2000))))),
                         )

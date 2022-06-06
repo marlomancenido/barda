@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// CREATE PAGE
+// This is where the user can create a new post. This is the (+) icon in the home menu bar
+// This also contains the backend function that submits the user's input to the server
+
 class Create extends StatefulWidget {
   const Create({Key? key}) : super(key: key);
 
@@ -17,6 +21,9 @@ class _CreateState extends State<Create> {
   bool is_public = true;
   TextEditingController controller = TextEditingController();
 
+  // Submit Post
+  // Submits post using the post header to the API
+  // Returns response for success/error handling
   Future submitPost(String text, bool audience) async {
     // Get AuthToken
     var token = await Auth.getToken();

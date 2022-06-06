@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../pages/person.dart';
+
+// FRIEND CARD WIDGET
+// Used for generating the friends list of the user.
 
 Widget friend_card(context, String username) {
   return Card(

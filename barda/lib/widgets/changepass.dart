@@ -1,9 +1,12 @@
 import 'dart:convert';
-
 import 'package:barda/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../services/auth.dart';
+
+// CHANGE PASS WIDGET
+// A sub-page of profile that handles any changes to the user's password.
+// Also contains the function for changing password.
 
 class ChangePass extends StatefulWidget {
   final String username, firstName, lastName;
@@ -15,6 +18,9 @@ class ChangePass extends StatefulWidget {
 }
 
 class _ChangePassState extends State<ChangePass> {
+  // Change Password
+  // Changes user's password.
+  // Returns response body for success/error handling.
   Future changePassword(String oldPass, String newPass) async {
     // Retrieve Token
     final token = await Auth.getToken(),
@@ -58,9 +64,9 @@ class _ChangePassState extends State<ChangePass> {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                       primary: Colors.white,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(2000)))),
+                              BorderRadius.all(Radius.circular(2000)))),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -78,7 +84,7 @@ class _ChangePassState extends State<ChangePass> {
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: EdgeInsets.only(bottom: 20, left: 20),
+                padding: const EdgeInsets.only(bottom: 20, left: 20),
                 child: Text(
                   'Change Password',
                   style: TextStyle(
@@ -99,7 +105,8 @@ class _ChangePassState extends State<ChangePass> {
                           topLeft: Radius.circular(25))),
                   child: Column(children: [
                     Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20, top: 30),
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 30),
                         child: Column(
                           children: [
                             Text(
@@ -111,24 +118,25 @@ class _ChangePassState extends State<ChangePass> {
                                   fontWeight: FontWeight.w600),
                             ),
                             Padding(
-                                padding: EdgeInsets.only(top: 10),
+                                padding: const EdgeInsets.only(top: 10),
                                 child: TextField(
                                   obscureText: true,
                                   controller: oldpass,
                                   // onChanged: (value) => message = value,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 15),
                                   decoration: InputDecoration(
                                       hintText: 'Enter old password',
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      enabledBorder: OutlineInputBorder(
+                                      hintStyle:
+                                          const TextStyle(color: Colors.grey),
+                                      enabledBorder: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(1000)),
                                         borderSide: BorderSide(
                                             color: Colors.grey, width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(1000)),
                                         borderSide: BorderSide(
                                             color: Theme.of(context)
@@ -137,7 +145,7 @@ class _ChangePassState extends State<ChangePass> {
                                             width: 1),
                                       )),
                                 )),
-                            Divider(),
+                            const Divider(),
                             Text(
                               'New Password',
                               style: TextStyle(
@@ -147,24 +155,25 @@ class _ChangePassState extends State<ChangePass> {
                                   fontWeight: FontWeight.w600),
                             ),
                             Padding(
-                                padding: EdgeInsets.only(top: 10),
+                                padding: const EdgeInsets.only(top: 10),
                                 child: TextField(
                                   obscureText: true,
                                   controller: newpass,
                                   // onChanged: (value) => message = value,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 15),
                                   decoration: InputDecoration(
                                       hintText: 'Enter new password',
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      enabledBorder: OutlineInputBorder(
+                                      hintStyle:
+                                          const TextStyle(color: Colors.grey),
+                                      enabledBorder: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(1000)),
                                         borderSide: BorderSide(
                                             color: Colors.grey, width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(1000)),
                                         borderSide: BorderSide(
                                             color: Theme.of(context)
@@ -173,7 +182,7 @@ class _ChangePassState extends State<ChangePass> {
                                             width: 1),
                                       )),
                                 )),
-                            Divider(),
+                            const Divider(),
                             Text(
                               'Repeat New Password',
                               style: TextStyle(
@@ -183,24 +192,25 @@ class _ChangePassState extends State<ChangePass> {
                                   fontWeight: FontWeight.w600),
                             ),
                             Padding(
-                                padding: EdgeInsets.only(top: 10),
+                                padding: const EdgeInsets.only(top: 10),
                                 child: TextField(
                                   obscureText: true,
                                   controller: newpass_c,
                                   // onChanged: (value) => message = value,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 15),
                                   decoration: InputDecoration(
                                       hintText: 'Repeat new password',
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      enabledBorder: OutlineInputBorder(
+                                      hintStyle:
+                                          const TextStyle(color: Colors.grey),
+                                      enabledBorder: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(1000)),
                                         borderSide: BorderSide(
                                             color: Colors.grey, width: 1),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(1000)),
                                         borderSide: BorderSide(
                                             color: Theme.of(context)
@@ -212,15 +222,15 @@ class _ChangePassState extends State<ChangePass> {
                           ],
                         )),
                     Padding(
-                      padding: EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.only(top: 30),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(2000)))),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2000)))),
                         child: Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(15),
                           child: Text(
                             'Confirm',
                             style: TextStyle(

@@ -1,3 +1,6 @@
+// Post Class
+// Making this a class makes it easier to get necessary info from a post to generate its page
+
 class Post {
   String id, text, username;
   bool public, is_authuser;

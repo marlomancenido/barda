@@ -1,16 +1,16 @@
 import 'dart:convert';
-
 import 'package:barda/extensions/string_extension.dart';
 import 'package:barda/models/comment.dart';
-import 'package:barda/models/user.dart';
 import 'package:barda/widgets/error.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
 import '../pages/person.dart';
 import '../services/auth.dart';
+
+// COMMENTS WIDGET
+// Generates the comments for a specific post. Also handles deletion of comments.
 
 class Comments extends StatefulWidget {
   final post_id;
@@ -26,6 +26,10 @@ class _CommentsState extends State<Comments> {
   List<Comment> comments = [];
   var lastId = '';
 
+  // Get Comments
+  // Gets all comments for a specific post.
+  // Sorts every comment according to date.
+  // Returns response for success/error handling.
   Future getComments(String post_id) async {
     final token = await Auth.getToken(), username = await Auth.getUsername();
 
@@ -70,6 +74,9 @@ class _CommentsState extends State<Comments> {
     return res;
   }
 
+  // Delete Comment
+  // Deletes a comment if comment is auth user's comment.
+  // Returns response for success/error handling.
   Future deleteComment(String post_id, String comment_id) async {
     // Get AuthToken
     var token = await Auth.getToken();
@@ -89,6 +96,9 @@ class _CommentsState extends State<Comments> {
     getComments(widget.post_id);
   }
 
+  // Refresh Feed
+  // Refreshes all comments.
+  // Called when pulled
   Future refreshFeed() async {
     setState(() {
       comments.clear();
@@ -102,13 +112,12 @@ class _CommentsState extends State<Comments> {
   Widget build(BuildContext context) {
     return Expanded(
         child: Scrollbar(
-            thumbVisibility: true,
             controller: controller,
             child: RefreshIndicator(
                 onRefresh: refreshFeed,
                 child: ListView.builder(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.only(top: 0),
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(top: 0),
                     controller: controller,
                     itemCount: comments.length + 1,
                     itemBuilder: (context, index) {
@@ -161,7 +170,7 @@ class _CommentsState extends State<Comments> {
                                                       });
                                                       // delete then refresh page
                                                     },
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.delete,
                                                       size: 15,
                                                       color: Colors.red,
@@ -186,11 +195,11 @@ class _CommentsState extends State<Comments> {
                                             alignment: Alignment.centerLeft,
                                             child: Text(
                                               comments[index].text,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 13),
                                             )),
-                                        Divider(),
+                                        const Divider(),
                                         Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
@@ -203,14 +212,14 @@ class _CommentsState extends State<Comments> {
                                         )
                                       ],
                                     )),
-                                Divider(color: Colors.grey, height: 30),
+                                const Divider(color: Colors.grey, height: 30),
                               ],
                             ));
                       } else {
                         return Align(
                           alignment: Alignment.center,
                           child: gotEverything
-                              ? Text("No more comments",
+                              ? const Text("No more comments",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 13,
@@ -224,10 +233,3 @@ class _CommentsState extends State<Comments> {
                     }))));
   }
 }
-
-// ElevatedButton(
-//           onPressed: () {
-//             getComments(post_id);
-//           },
-//           child: Text('What?'),
-//         )

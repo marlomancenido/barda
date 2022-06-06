@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../services/auth.dart';
 
+// Makes a User Class
+// Unfortunately, this didn't get used in the end to avoid overcomplicating the app
 class User {
   // String username, firstName, lastName;
   // User(this.username, this.firstName, this.lastName);
@@ -10,6 +12,8 @@ class User {
   User(this.username);
 }
 
+// Get User Posts
+// Retrieves auth user's posts
 Future<List<Post>> getUserPosts() async {
   // Retrieve Token and Username
   final token = await Auth.getToken(), username = await Auth.getUsername();
@@ -45,11 +49,15 @@ Future<List<Post>> getUserPosts() async {
   return posts;
 }
 
+// Get Number of Followers
+// This returns how many friends the auth user has
 Future<int> getNoFollowers() async {
   var friends = await getFriends();
   return friends.length;
 }
 
+// Get Auth User Data
+// This retrieves all the needed data for the user's profile page (Name, Username, number of followers/friends)
 Future getAuthUserData() async {
   final friends = await getFriends();
   final count = friends.length;
@@ -77,11 +85,15 @@ Future getAuthUserData() async {
   };
 }
 
+// isFriends()
+// Checks if a user is friends with the auth user
 Future isFriends(String username) async {
   final friends = await getFriends();
   return friends.contains(username);
 }
 
+// Get Friends
+// Returns a list of all the friends of the auth user
 Future<List<String>> getFriends() async {
   List<String> friends = [];
 
@@ -110,34 +122,11 @@ Future<List<String>> getFriends() async {
   return friends;
 }
 
-Future followUser(String username) async {
-  // Retrieve Token
-  final token = await Auth.getToken();
-  final user = await Auth.getUsername();
-
-  final uri = Uri.https(
-    'cmsc-23-2022-bfv6gozoca-as.a.run.app',
-    '/api/user/$user',
-  );
-  final res = await http.get(
-    uri,
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
-    },
-  );
-
-  // var jsonData = jsonDecode(res.body);
-  print(res.body);
-
-  // return friends;
-}
-
+// Get User Data
+// Gets the data needed to generate a user profile page (non-auth user)
 Future getUserData(String username) async {
   final auth_user = await Auth.getUsername();
   final friends = await getFriends();
-  final count = friends.length;
 
   // 0 - Not Friends, 1 - Friends, 2 - isAuthUser
   int friend_stat = 0;
@@ -164,7 +153,6 @@ Future getUserData(String username) async {
 
   return {
     'username': username,
-    'followers_count': count,
     'firstName': jsonData['data']['firstName'],
     'lastName': jsonData['data']['lastName'],
     'friendStat': friend_stat

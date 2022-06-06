@@ -3,10 +3,14 @@ import 'package:http/http.dart' as http;
 import 'package:barda/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../models/post.dart';
 import '../services/auth.dart';
 import '../widgets/post_container.dart';
+
+// FEED PAGE
+// This contains the posts for display. This also handles generation of posts
+// and the pagination display for the posts. Currently, this has a limit of 5 posts
+// per getPosts() call.
 
 class Feed extends StatefulWidget {
   const Feed({Key? key}) : super(key: key);
@@ -17,10 +21,13 @@ class Feed extends StatefulWidget {
 
 class _Feed extends State<Feed> {
   final controller = ScrollController();
-  bool hasMore = true;
+  bool hasMore =
+      true; // Used to tell user if there are more posts or if they reached the end
   List<Post> posts = [];
   var lastid = '';
 
+  // Get Posts
+  // Retrieves posts from the server
   Future getPosts() async {
     // Retrieve Token and Username
     final token = await Auth.getToken(), username = await Auth.getUsername();
@@ -74,6 +81,8 @@ class _Feed extends State<Feed> {
         if (mounted) {
           setState(() {
             posts.addAll(temp_posts);
+            // If there are only few posts that the user is able to see, fetch more
+            // There must be a minimum of 5 posts.
             if (posts.length < limit) {
               getPosts();
             }
@@ -95,6 +104,7 @@ class _Feed extends State<Feed> {
     }
   }
 
+  // Gets called when user refreshes the feed (pulls from top)
   Future refreshFeed() async {
     if (mounted) {
       setState(() {
@@ -111,6 +121,7 @@ class _Feed extends State<Feed> {
     super.initState();
     getPosts();
     controller.addListener(() {
+      // If end is reached, get more posts!
       if (controller.position.maxScrollExtent == controller.offset) {
         getPosts();
       }
@@ -148,7 +159,6 @@ class _Feed extends State<Feed> {
             ),
             Expanded(
                 child: Scrollbar(
-                    thumbVisibility: true,
                     controller: controller,
                     child: Container(
                       width: MediaQuery.of(context).size.width,
@@ -169,11 +179,12 @@ class _Feed extends State<Feed> {
                                     return Padding(
                                       padding: EdgeInsets.only(bottom: 10),
                                       child:
+                                          // Post rendering is done with generate post (widgets)
                                           generatepost(context, posts[index]),
                                     );
                                   } else {
                                     return Padding(
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             top: 10, bottom: 20),
                                         child: hasMore
                                             ? CupertinoActivityIndicator(
@@ -181,7 +192,7 @@ class _Feed extends State<Feed> {
                                                     .colorScheme
                                                     .secondary,
                                               )
-                                            : Align(
+                                            : const Align(
                                                 alignment: Alignment.center,
                                                 child: Text("No more posts",
                                                     style: TextStyle(

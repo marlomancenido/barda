@@ -1,8 +1,11 @@
 import 'package:barda/pages/create.dart';
 import 'package:barda/pages/feed.dart';
 import 'package:barda/pages/profile.dart';
-
 import 'package:flutter/material.dart';
+
+// HOME PAGE
+// Directly after logging in or opening the app, the user gets directed here.
+// This contains the bottom navigation tab and navigation for the main pages: feed, auth user's profile, create
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -13,7 +16,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late PageController pageController;
-  int pageIndex = 0;
+  int pageIndex = 0; // Starts at feed page
 
   @override
   void initState() {

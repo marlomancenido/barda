@@ -1,3 +1,6 @@
+// Comment Class
+// Making this a class makes it easier to generate comments
+
 class Comment {
   String id, text, username, post_id;
   bool is_authuser;

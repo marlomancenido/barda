@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+// ERROR HANDLING WIDGET
+// Handles all errors/success snackbars.
+// This is called when making error/succes snackbars.
+
 showError(BuildContext context, var errorcode, String errormessage) {
   return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: RichText(

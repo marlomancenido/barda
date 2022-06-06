@@ -1,16 +1,18 @@
 import 'dart:convert';
-
 import 'package:barda/extensions/string_extension.dart';
 import 'package:barda/models/post.dart';
 import 'package:barda/pages/person.dart';
 import 'package:barda/widgets/comments.dart';
 import 'package:barda/widgets/error.dart';
-import 'package:barda/widgets/person_posts.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-
 import '../services/auth.dart';
+
+// POST PAGE
+// Generates a page when a post is clicked. Shows everything about the post.
+// Also contains functions for removing a post, editing a post and submitting a comment
+// Function for deleting a comment is in the comments in the widgets folder
 
 class PostPage extends StatefulWidget {
   final Post post;
@@ -22,6 +24,9 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
+  // Edit Post
+  // Submits edited post to API.
+  // Returns response for error/success handling
   Future editPost(String id, String text, bool audience) async {
     // Get AuthToken
     var token = await Auth.getToken();
@@ -41,6 +46,9 @@ class _PostPageState extends State<PostPage> {
     return jsonData;
   }
 
+  // Delete Post
+  // Deletes a post. Happens when delete is clicked by auth user
+  // Returns response for error/success handling
   Future deletePost(String id) async {
     // Get AuthToken
     var token = await Auth.getToken();
@@ -53,6 +61,9 @@ class _PostPageState extends State<PostPage> {
     return jsonData;
   }
 
+  // Submit Comment
+  // Submits a comment to API.
+  // Retunrs ressponse for error/success handling
   Future submitComment(String text, String id) async {
     // Get AuthToken
     var token = await Auth.getToken();
@@ -72,6 +83,9 @@ class _PostPageState extends State<PostPage> {
     return jsonData;
   }
 
+  // Edit Sheet
+  // Displays bottom modal sheet containing form for editing a post
+  // Also displays if success/error when calling editPost
   editSheet(BuildContext context, String text, String id, bool is_public) {
     var edited_text = text, edit_public = is_public;
     TextEditingController controller = TextEditingController();
@@ -226,6 +240,9 @@ class _PostPageState extends State<PostPage> {
         });
   }
 
+  // Add Comment
+  // Displays a bottom modal sheet for adding a comment.
+  // Also displays if success/error when calling submitComment
   addComment(BuildContext context) {
     TextEditingController controller = TextEditingController();
     return showModalBottomSheet(
@@ -342,9 +359,9 @@ class _PostPageState extends State<PostPage> {
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(2000)))),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(2000)))),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -380,7 +397,7 @@ class _PostPageState extends State<PostPage> {
                           Row(
                             children: [
                               Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.white),
                                 child: IconButton(
@@ -392,9 +409,9 @@ class _PostPageState extends State<PostPage> {
                                         size: 15, color: Colors.black)),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 5),
+                                padding: const EdgeInsets.only(left: 5),
                                 child: Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Colors.white),
                                   child: IconButton(
@@ -427,12 +444,12 @@ class _PostPageState extends State<PostPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: is_public
                             ? Row(
-                                children: [
+                                children: const [
                                   Padding(
                                     padding: EdgeInsets.only(right: 3),
                                     child: Icon(Icons.public,
@@ -440,7 +457,7 @@ class _PostPageState extends State<PostPage> {
                                   ),
                                   Text(
                                     'Public',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.grey),
@@ -448,7 +465,7 @@ class _PostPageState extends State<PostPage> {
                                 ],
                               )
                             : Row(
-                                children: [
+                                children: const [
                                   Padding(
                                     padding: EdgeInsets.only(right: 3),
                                     child: Icon(Icons.group,
@@ -456,7 +473,7 @@ class _PostPageState extends State<PostPage> {
                                   ),
                                   Text(
                                     'Friends',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.grey),
@@ -469,7 +486,7 @@ class _PostPageState extends State<PostPage> {
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                            constraints: BoxConstraints(maxHeight: 300),
+                            constraints: const BoxConstraints(maxHeight: 300),
                             child: SizedBox(
                                 child: Scrollbar(
                                     // thumbVisibility: true,
@@ -507,7 +524,7 @@ class _PostPageState extends State<PostPage> {
                 ]),
                 Comments(id),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 50),
+                  padding: const EdgeInsets.only(bottom: 50),
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: FloatingActionButton(

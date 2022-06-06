@@ -1,12 +1,13 @@
 import 'package:barda/models/post.dart';
-import 'package:barda/pages/home.dart';
 import 'package:barda/pages/person.dart';
 import 'package:barda/pages/post.dart';
-import 'package:barda/pages/profile.dart';
-import 'package:barda/services/auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+// POST CONTAINER WIDGET
+// Generates all posts thrown to it. Generates the card-like container containing
+// a post.
+// Needs a post as parameter.
 
 Widget generatepost(context, Post post) {
   // Initializing Icon
@@ -23,7 +24,7 @@ Widget generatepost(context, Post post) {
     decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 0.5),
         color: Colors.transparent,
-        borderRadius: BorderRadius.all(Radius.circular(15))),
+        borderRadius: const BorderRadius.all(Radius.circular(15))),
     child: Column(children: [
       SizedBox(
           width: double.infinity,
@@ -45,7 +46,7 @@ Widget generatepost(context, Post post) {
                       Icon(
                         icon,
                         size: 18,
-                        color: Color.fromARGB(255, 97, 97, 97),
+                        color: const Color.fromARGB(255, 97, 97, 97),
                       ),
                     ],
                   )),
@@ -73,11 +74,11 @@ Widget generatepost(context, Post post) {
                           post.text,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600, color: Colors.white),
                         )),
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 10),
                       child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Text(
