@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 showError(BuildContext context, var errorcode, String errormessage) {
   return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      key: Key('error_snbar'),
       content: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
@@ -29,6 +30,7 @@ showError(BuildContext context, var errorcode, String errormessage) {
 
 showSuccess(BuildContext context, String message) {
   return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      key: Key('success_snbar'),
       content: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(

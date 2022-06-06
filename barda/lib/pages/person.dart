@@ -44,11 +44,13 @@ class _PersonState extends State<Person> {
     var jsonData = jsonDecode(res.body);
 
     if (jsonData['success']) {
-      setState(() {
-        Navigator.pop(context);
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => Person(widget.username)));
-      });
+      if (mounted) {
+        setState(() {
+          Navigator.pop(context);
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => Person(widget.username)));
+        });
+      }
     }
 
     return jsonData;
@@ -178,6 +180,7 @@ class _PersonState extends State<Person> {
                       // If 0, show follow button. If 1, show unfollow button. If 2, show nothing.
                       is_following == 0
                           ? ElevatedButton.icon(
+                              key: Key('follow_btn'),
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.white,
                                   shape: RoundedRectangleBorder(
@@ -209,6 +212,7 @@ class _PersonState extends State<Person> {
                             )
                           : is_following == 1
                               ? ElevatedButton.icon(
+                                  key: Key('unfollow_btn'),
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.grey,
                                       shape: RoundedRectangleBorder(

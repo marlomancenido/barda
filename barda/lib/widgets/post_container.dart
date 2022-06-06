@@ -20,6 +20,7 @@ Widget generatepost(context, Post post) {
       time = DateFormat.jm().format(post.date);
 
   return Container(
+    key: Key('post_container'),
     height: 120,
     decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 0.5),
@@ -30,6 +31,7 @@ Widget generatepost(context, Post post) {
           width: double.infinity,
           height: 40,
           child: InkWell(
+            key: Key('post_user'),
             child: Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: Align(
@@ -66,6 +68,7 @@ Widget generatepost(context, Post post) {
           child: Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
               child: InkWell(
+                key: Key('post_cntr'),
                 child: Column(
                   children: [
                     Align(

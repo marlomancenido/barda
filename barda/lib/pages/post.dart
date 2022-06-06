@@ -112,6 +112,7 @@ class _PostPageState extends State<PostPage> {
                           padding:
                               EdgeInsets.only(left: 20, right: 20, top: 30),
                           child: TextField(
+                            key: Key('edit_text'),
                             controller: controller,
                             onChanged: (value) => edited_text = value,
                             maxLines: 3,
@@ -149,6 +150,7 @@ class _PostPageState extends State<PostPage> {
                               Row(
                                 children: [
                                   IconButton(
+                                    key: Key('edit_pub'),
                                     iconSize: 35,
                                     icon: Icon(
                                       Icons.public,
@@ -165,6 +167,7 @@ class _PostPageState extends State<PostPage> {
                                     },
                                   ),
                                   IconButton(
+                                    key: Key('edit_priv'),
                                     iconSize: 35,
                                     icon: Icon(
                                       Icons.group,
@@ -187,6 +190,7 @@ class _PostPageState extends State<PostPage> {
                       Padding(
                           padding: EdgeInsets.only(top: 50),
                           child: ElevatedButton(
+                            key: Key('edit_submit'),
                             onPressed: () async {
                               var response =
                                   await editPost(id, edited_text, edit_public);
@@ -266,6 +270,7 @@ class _PostPageState extends State<PostPage> {
                           padding:
                               EdgeInsets.only(left: 20, right: 20, top: 30),
                           child: TextField(
+                            key: Key('comment_text'),
                             controller: controller,
                             maxLines: 3,
                             style: TextStyle(color: Colors.white),
@@ -291,6 +296,7 @@ class _PostPageState extends State<PostPage> {
                       Padding(
                           padding: EdgeInsets.only(top: 20),
                           child: ElevatedButton(
+                            key: Key('comment_submit'),
                             onPressed: () async {
                               var response = await submitComment(
                                   controller.text, widget.post.id);
@@ -401,6 +407,7 @@ class _PostPageState extends State<PostPage> {
                                     shape: BoxShape.circle,
                                     color: Colors.white),
                                 child: IconButton(
+                                    key: Key('edit_post'),
                                     color: Colors.white,
                                     onPressed: () {
                                       editSheet(context, text, id, is_public);
@@ -415,6 +422,7 @@ class _PostPageState extends State<PostPage> {
                                       shape: BoxShape.circle,
                                       color: Colors.white),
                                   child: IconButton(
+                                      key: Key('del_post'),
                                       color: Colors.white,
                                       onPressed: () async {
                                         var response = await deletePost(id);
@@ -528,6 +536,7 @@ class _PostPageState extends State<PostPage> {
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: FloatingActionButton(
+                      key: Key('add_comment'),
                       backgroundColor: Colors.white,
                       onPressed: () {
                         addComment(context);

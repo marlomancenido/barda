@@ -79,6 +79,7 @@ class _CreateState extends State<Create> {
                 Padding(
                     padding: EdgeInsets.only(left: 20, right: 20, top: 30),
                     child: TextField(
+                      key: Key('crt_text'),
                       controller: controller,
                       onChanged: (value) => message = value,
                       maxLines: 3,
@@ -112,6 +113,7 @@ class _CreateState extends State<Create> {
                         Row(
                           children: [
                             IconButton(
+                              key: Key('crt_public'),
                               iconSize: 35,
                               icon: Icon(
                                 Icons.public,
@@ -126,6 +128,7 @@ class _CreateState extends State<Create> {
                               },
                             ),
                             IconButton(
+                              key: Key('crt_friends'),
                               iconSize: 35,
                               icon: Icon(
                                 Icons.group,
@@ -146,6 +149,7 @@ class _CreateState extends State<Create> {
                 Padding(
                   padding: EdgeInsets.only(top: 50),
                   child: ElevatedButton(
+                      key: Key('crt_submit'),
                       style: ElevatedButton.styleFrom(
                           primary: Colors.white,
                           shape: RoundedRectangleBorder(

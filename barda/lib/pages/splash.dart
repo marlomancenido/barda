@@ -1,5 +1,4 @@
 import 'package:barda/widgets/error.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "../extensions/string_extension.dart";
 import 'dart:convert';
@@ -106,6 +105,7 @@ class _SplashState extends State<Splash> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextFormField(
+                            key: const Key('login_un'),
                             onChanged: (String value) {
                               username = value;
                             },
@@ -129,6 +129,7 @@ class _SplashState extends State<Splash> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextFormField(
+                            key: const Key('login_pw'),
                             onChanged: (String value) {
                               password = value;
                             },
@@ -155,6 +156,7 @@ class _SplashState extends State<Splash> {
                     Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: TextButton(
+                            key: Key('submitlogin_btn'),
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 var response =
@@ -237,6 +239,7 @@ class _SplashState extends State<Splash> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextFormField(
+                            key: const Key('reg_fname'),
                             onChanged: (String value) {
                               firstName = value;
                             },
@@ -260,6 +263,7 @@ class _SplashState extends State<Splash> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextFormField(
+                            key: const Key('reg_lname'),
                             onChanged: (String value) {
                               lastName = value;
                             },
@@ -283,6 +287,7 @@ class _SplashState extends State<Splash> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextFormField(
+                            key: const Key('reg_uname'),
                             onChanged: (String value) {
                               username = value;
                             },
@@ -306,6 +311,7 @@ class _SplashState extends State<Splash> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextFormField(
+                            key: const Key('reg_pass'),
                             onChanged: (String value) {
                               password = value;
                             },
@@ -332,6 +338,7 @@ class _SplashState extends State<Splash> {
                     Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: TextButton(
+                            key: Key('reg_submit'),
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 var response = await userRegister(
@@ -378,6 +385,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: Key('splash_page'),
         body: Container(
             // alignment: Alignment.center,
             decoration:
@@ -411,6 +419,7 @@ class _SplashState extends State<Splash> {
                     child: Row(
                       children: <Widget>[
                         OutlinedButton(
+                            key: const Key('login_btn'),
                             onPressed: () {
                               setState(() {
                                 loginSheet(context);
@@ -426,7 +435,7 @@ class _SplashState extends State<Splash> {
                               ),
                             ),
                             style: OutlinedButton.styleFrom(
-                              shape: const RoundedRectangleBorder(
+                              shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(2000))),
                               side: BorderSide(
@@ -436,6 +445,7 @@ class _SplashState extends State<Splash> {
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: TextButton(
+                              key: Key('regbutton'),
                               onPressed: () {
                                 regSheet(context);
                               },
@@ -451,7 +461,7 @@ class _SplashState extends State<Splash> {
                               style: TextButton.styleFrom(
                                   backgroundColor:
                                       Theme.of(context).colorScheme.primary,
-                                  shape: const RoundedRectangleBorder(
+                                  shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(2000))))),
                         )

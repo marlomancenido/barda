@@ -9,6 +9,7 @@ Widget friend_card(context, String username) {
     color: Colors.transparent,
     elevation: 0,
     child: ListTile(
+      key: Key('friendcard'),
       trailing: const IconButton(
           onPressed: null,
           icon: Icon(Icons.chevron_right,

@@ -73,11 +73,17 @@ class _HomeState extends State<Home> {
                     activeIcon: Icon(Icons.home),
                     label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.add_circle_outlined),
+                    icon: Icon(
+                      Icons.add_circle_outlined,
+                      key: Key('create_btn'),
+                    ),
                     activeIcon: Icon(Icons.add_circle),
                     label: 'Add'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.person_outlined),
+                    icon: Icon(
+                      Icons.person_outlined,
+                      key: Key('profile_btn'),
+                    ),
                     activeIcon: Icon(Icons.person),
                     label: 'User'),
               ]),

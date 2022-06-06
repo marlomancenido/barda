@@ -137,8 +137,14 @@ class _ProfileState extends State<Profile> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.w700),
                                   ),
-                                  Icon(Icons.group),
-                                  Icon(Icons.settings)
+                                  Icon(
+                                    Icons.group,
+                                    key: Key('friends_btn'),
+                                  ),
+                                  Icon(
+                                    Icons.settings,
+                                    key: Key('settings_btn'),
+                                  )
                                 ],
                               ),
                               Expanded(
@@ -193,6 +199,7 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.transparent,
                                         elevation: 0,
                                         child: ListTile(
+                                            key: Key('ch_pass'),
                                             trailing: const IconButton(
                                                 onPressed: null,
                                                 icon: Icon(Icons.chevron_right,
@@ -217,6 +224,7 @@ class _ProfileState extends State<Profile> {
                                       Padding(
                                         padding: const EdgeInsets.only(top: 15),
                                         child: ElevatedButton(
+                                          key: Key('logout_btn'),
                                           style: ElevatedButton.styleFrom(
                                               primary: Colors.white,
                                               shape: RoundedRectangleBorder(

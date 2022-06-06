@@ -150,6 +150,7 @@ class _CommentsState extends State<Comments> {
                                                         FontWeight.w700)),
                                             comments[index].is_authuser
                                                 ? IconButton(
+                                                    key: Key('del_comment'),
                                                     onPressed: () async {
                                                       var res =
                                                           await deleteComment(
@@ -165,9 +166,11 @@ class _CommentsState extends State<Comments> {
                                                                 .toString()
                                                                 .toCapitalized());
                                                       }
-                                                      setState(() {
-                                                        refreshFeed();
-                                                      });
+                                                      if (mounted) {
+                                                        setState(() {
+                                                          refreshFeed();
+                                                        });
+                                                      }
                                                       // delete then refresh page
                                                     },
                                                     icon: const Icon(

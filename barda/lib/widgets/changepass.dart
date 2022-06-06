@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:barda/extensions/string_extension.dart';
+import 'package:barda/widgets/error.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../services/auth.dart';
@@ -120,6 +121,7 @@ class _ChangePassState extends State<ChangePass> {
                             Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: TextField(
+                                  key: Key('old_pass'),
                                   obscureText: true,
                                   controller: oldpass,
                                   // onChanged: (value) => message = value,
@@ -157,6 +159,7 @@ class _ChangePassState extends State<ChangePass> {
                             Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: TextField(
+                                  key: Key('new_pass'),
                                   obscureText: true,
                                   controller: newpass,
                                   // onChanged: (value) => message = value,
@@ -194,6 +197,7 @@ class _ChangePassState extends State<ChangePass> {
                             Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: TextField(
+                                  key: Key('new_pass_c'),
                                   obscureText: true,
                                   controller: newpass_c,
                                   // onChanged: (value) => message = value,
@@ -224,6 +228,7 @@ class _ChangePassState extends State<ChangePass> {
                     Padding(
                       padding: const EdgeInsets.only(top: 30),
                       child: ElevatedButton(
+                        key: Key('pass_submit'),
                         style: ElevatedButton.styleFrom(
                             primary: Colors.white,
                             shape: RoundedRectangleBorder(
@@ -241,6 +246,7 @@ class _ChangePassState extends State<ChangePass> {
                         onPressed: () async {
                           if (newpass_c.text != newpass.text) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                key: Key('error_snbar'),
                                 content: RichText(
                                   textAlign: TextAlign.center,
                                   text: const TextSpan(
@@ -268,6 +274,7 @@ class _ChangePassState extends State<ChangePass> {
                             newpass_c.clear();
                           } else if (oldpass.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                key: Key('error_snbar'),
                                 content: RichText(
                                   textAlign: TextAlign.center,
                                   text: const TextSpan(
@@ -297,32 +304,8 @@ class _ChangePassState extends State<ChangePass> {
                                 oldpass.text, newpass.text);
 
                             if (response['success']) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: RichText(
-                                        textAlign: TextAlign.center,
-                                        text: const TextSpan(
-                                          text: 'Success!',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              color: Colors.white),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text: ' Password is changed.',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.white)),
-                                          ],
-                                        ),
-                                      ),
-                                      behavior: SnackBarBehavior.floating,
-                                      padding: const EdgeInsets.all(20),
-                                      backgroundColor: Colors.green,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8));
+                              showSuccess(
+                                  context, 'Successfully changed password.');
                               Navigator.pop(context);
                               setState(() {});
                             } else {
@@ -330,45 +313,12 @@ class _ChangePassState extends State<ChangePass> {
                               var message = response['message']
                                   .toString()
                                   .toCapitalized();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(
-                                          text: 'Error $statusCode.',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              color: Colors.white),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text: ' $message.',
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.white)),
-                                          ],
-                                        ),
-                                      ),
-                                      behavior: SnackBarBehavior.floating,
-                                      padding: const EdgeInsets.all(20),
-                                      backgroundColor: Colors.red,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8));
+                              showError(context, statusCode, message);
                               newpass_c.clear();
                               newpass.clear();
                               oldpass.clear();
                             }
                           }
-
-                          // var response =
-                          //     await userLogout(token);
-
-                          // if (response['success']) {
-                          //   Navigator.popAndPushNamed(
-                          //       context, '/splash');
-                          // }
                         },
                       ),
                     )

@@ -137,6 +137,7 @@ class _Feed extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: Key('feed_page'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         body: Column(
           children: [
@@ -159,6 +160,7 @@ class _Feed extends State<Feed> {
             ),
             Expanded(
                 child: Scrollbar(
+                    key: const Key('feed_ctrl'),
                     controller: controller,
                     child: Container(
                       width: MediaQuery.of(context).size.width,
