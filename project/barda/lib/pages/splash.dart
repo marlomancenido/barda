@@ -1,3 +1,4 @@
+import 'package:barda/widgets/error.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "../extensions/string_extension.dart";
@@ -18,6 +19,10 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  // User Login
+  // Logs user in through the API
+  // Will set token  if success, else displays the error
+  // Returns entire response body
   Future userLogin(String username, String password) async {
     final res = await http.post(
         Uri.parse('https://cmsc-23-2022-bfv6gozoca-as.a.run.app/api/login'),
@@ -39,6 +44,9 @@ class _SplashState extends State<Splash> {
     return jsonData;
   }
 
+  // User Register
+  // Registers a user through the API
+  // Returns entire response body
   Future userRegister(String username, String password, String firstname,
       String lastname) async {
     final res = await http.post(
@@ -58,6 +66,9 @@ class _SplashState extends State<Splash> {
     return jsonData;
   }
 
+  // Login Sheet
+  // Displays a bottom modal sheet that contains the sign in form
+  // Shows error if any or redirects user to the home page if success
   loginSheet(BuildContext context) {
     String username = '', password = '';
     final _formKey = GlobalKey<FormState>();
@@ -159,36 +170,7 @@ class _SplashState extends State<Splash> {
                                       .toString()
                                       .toCapitalized();
                                   Navigator.pop(context);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: RichText(
-                                            textAlign: TextAlign.center,
-                                            text: TextSpan(
-                                              text: 'Error $statusCode.',
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: Colors.white),
-                                              children: <TextSpan>[
-                                                TextSpan(
-                                                    text: ' $message.',
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.white)),
-                                              ],
-                                            ),
-                                          ),
-                                          behavior: SnackBarBehavior.floating,
-                                          padding: const EdgeInsets.all(20),
-                                          backgroundColor: Colors.red,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30)),
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.8));
-                                  // Navigator.pop(context);
+                                  showError(context, statusCode, message);
                                 }
                               }
                               ;
@@ -216,6 +198,9 @@ class _SplashState extends State<Splash> {
         });
   }
 
+  // Reg Sheet
+  // Displays a bottom modal sheet that contains the sign up form
+  // Shows if success or not in registering new user
   regSheet(BuildContext context) {
     String username = '', password = '', firstName = '', lastName = '';
     final _formKey = GlobalKey<FormState>();
@@ -356,47 +341,16 @@ class _SplashState extends State<Splash> {
                                 var status, message, color;
 
                                 if (response['success']) {
-                                  status = 'Success!';
-                                  color = Colors.green;
                                   message = 'Account successfully created!';
+                                  Navigator.pop(context);
+                                  showSuccess(context, message);
                                 } else {
-                                  var code = response['statusCode'];
-                                  status =
-                                      'Account creation failed. Error $code';
-                                  color = Colors.red;
                                   message = response['message'];
+                                  message = message.toString().toCapitalized();
+                                  Navigator.pop(context);
+                                  showError(
+                                      context, response['statusCode'], message);
                                 }
-
-                                message = message.toString().toCapitalized();
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: RichText(
-                                          textAlign: TextAlign.center,
-                                          text: TextSpan(
-                                            text: '$status',
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w800,
-                                                color: Colors.white),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: ' $message',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.white)),
-                                            ],
-                                          ),
-                                        ),
-                                        behavior: SnackBarBehavior.floating,
-                                        padding: const EdgeInsets.all(20),
-                                        backgroundColor: color,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.8));
                               }
                               ;
                             },
@@ -404,8 +358,8 @@ class _SplashState extends State<Splash> {
                                 alignment: Alignment.centerLeft,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.primary,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(2000)))),
                             child: const Padding(
                               padding: EdgeInsets.only(left: 10, right: 10),
