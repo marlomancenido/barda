@@ -71,10 +71,7 @@ class _Feed extends State<Feed> {
 
         setState(() {
           posts.addAll(temp_posts);
-
-          if (temp_posts.length > limit) {
-            hasMore = false;
-          } else {
+          if (posts.length < limit) {
             getPosts();
           }
         });

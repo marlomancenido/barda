@@ -26,8 +26,8 @@ class _PersonPostsState extends State<PersonPosts> {
   Future getUserPosts() async {
     // Retrieve Token and Username
     final token = await Auth.getToken();
-    final uri = Uri.https(
-        'cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/post', {'next': lastId});
+    final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/post',
+        {'username': widget.username});
     final res = await http.get(
       uri,
       headers: <String, String>{
