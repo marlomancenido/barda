@@ -25,7 +25,8 @@ class _PersonPostsState extends State<PersonPosts> {
 
   Future getUserPosts() async {
     // Retrieve Token and Username
-    final token = await Auth.getToken();
+    final token = await Auth.getToken(),
+        is_Friends = await isFriends(widget.username);
     final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/post',
         {'username': widget.username});
     final res = await http.get(
@@ -52,12 +53,19 @@ class _PersonPostsState extends State<PersonPosts> {
             date: date,
             updated: p['updated']);
 
-        if (p['username'] == widget.username) {
+        if (p['public']) {
           setState(() {
             posts.add(post);
-            lastId = post.id;
+          });
+        } else if (is_Friends) {
+          setState(() {
+            posts.add(post);
           });
         }
+
+        setState(() {
+          lastId = post.id;
+        });
       }
       setState(() {
         hasMore = false;
