@@ -25,7 +25,7 @@ class _Feed extends State<Feed> {
     // Retrieve Token and Username
     final token = await Auth.getToken(), username = await Auth.getUsername();
     List<String> friends = await getFriends();
-    var limit = 7;
+    var limit = 5;
     List<Post> temp_posts = [];
 
     final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/post',
@@ -63,8 +63,10 @@ class _Feed extends State<Feed> {
               friends.contains(p['username']) ||
               p['username'] == username) {
             temp_posts.add(post);
-            lastid = p['id'];
           }
+          setState(() {
+            lastid = p['id'];
+          });
         }
 
         setState(() {
@@ -72,6 +74,8 @@ class _Feed extends State<Feed> {
 
           if (temp_posts.length > limit) {
             hasMore = false;
+          } else {
+            getPosts();
           }
         });
       } else {

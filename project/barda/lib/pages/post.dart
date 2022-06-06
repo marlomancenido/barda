@@ -327,189 +327,202 @@ class _PostPageState extends State<PostPage> {
         time = DateFormat.jm().format(widget.post.date);
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         body: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Padding(
-                padding: const EdgeInsets.only(top: 50, left: 1),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(2000)))),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back_ios_new,
-                        size: 15, color: Colors.black),
-                    label: const Text(
-                      'Back',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                )),
-            const Divider(),
-            Column(children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Person(username)));
-                      },
-                      child: Text(
-                        '@$username',
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).colorScheme.secondary),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(top: 50, left: 1),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(2000)))),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back_ios_new,
+                            size: 15, color: Colors.black),
+                        label: const Text(
+                          'Back',
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
-                    ),
-                    if (owned)
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.white),
-                            child: IconButton(
-                                color: Colors.white,
-                                onPressed: () {
-                                  editSheet(context, text, id, is_public);
-                                },
-                                icon: const Icon(Icons.edit,
-                                    size: 15, color: Colors.black)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle, color: Colors.white),
-                              child: IconButton(
-                                  color: Colors.white,
-                                  onPressed: () async {
-                                    var response = await deletePost(id);
-
-                                    if (response['success']) {
-                                      Navigator.pop(context);
-                                      setState(() {});
-                                      showSuccess(
-                                          context, 'Post is now deleted.');
-                                    } else {
-                                      var statusCode = response['statusCode'];
-                                      var message = response['message']
-                                          .toString()
-                                          .toCapitalized();
-                                      showError(context, statusCode, message);
-                                    }
-                                  },
-                                  icon: const Icon(Icons.delete,
-                                      size: 15, color: Colors.black)),
-                            ),
-                          )
-                        ],
-                      )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Align(
+                    )),
+                const Divider(),
+                Column(children: [
+                  Align(
                     alignment: Alignment.centerLeft,
-                    child: is_public
-                        ? Row(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Person(username)));
+                          },
+                          child: Text(
+                            '@$username',
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context).colorScheme.secondary),
+                          ),
+                        ),
+                        if (owned)
+                          Row(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 3),
-                                child: Icon(Icons.public,
-                                    size: 13, color: Colors.grey),
+                              Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white),
+                                child: IconButton(
+                                    color: Colors.white,
+                                    onPressed: () {
+                                      editSheet(context, text, id, is_public);
+                                    },
+                                    icon: const Icon(Icons.edit,
+                                        size: 15, color: Colors.black)),
                               ),
-                              Text(
-                                'Public',
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white),
+                                  child: IconButton(
+                                      color: Colors.white,
+                                      onPressed: () async {
+                                        var response = await deletePost(id);
+
+                                        if (response['success']) {
+                                          Navigator.pop(context);
+                                          setState(() {});
+                                          showSuccess(
+                                              context, 'Post is now deleted.');
+                                        } else {
+                                          var statusCode =
+                                              response['statusCode'];
+                                          var message = response['message']
+                                              .toString()
+                                              .toCapitalized();
+                                          showError(
+                                              context, statusCode, message);
+                                        }
+                                      },
+                                      icon: const Icon(Icons.delete,
+                                          size: 15, color: Colors.black)),
+                                ),
                               )
                             ],
                           )
-                        : Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 3),
-                                child: Icon(Icons.group,
-                                    size: 13, color: Colors.grey),
-                              ),
-                              Text(
-                                'Friends',
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: is_public
+                            ? Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 3),
+                                    child: Icon(Icons.public,
+                                        size: 13, color: Colors.grey),
+                                  ),
+                                  Text(
+                                    'Public',
+                                    style: const TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey),
+                                  )
+                                ],
                               )
-                            ],
-                          )),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    text,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white),
+                            : Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 3),
+                                    child: Icon(Icons.group,
+                                        size: 13, color: Colors.grey),
+                                  ),
+                                  Text(
+                                    'Friends',
+                                    style: const TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey),
+                                  )
+                                ],
+                              )),
                   ),
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '$time • $date',
-                        style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                            constraints: BoxConstraints(maxHeight: 300),
+                            child: SizedBox(
+                                child: Scrollbar(
+                                    // thumbVisibility: true,
+                                    child: SingleChildScrollView(
+                              child: Text(
+                                text,
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              ),
+                            ))))),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '$time • $date',
+                            style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey),
+                          ),
+                        ],
+                      )),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ]),
+                Comments(id),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 50),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.white,
+                      onPressed: () {
+                        addComment(context);
+                      },
+                      child: Icon(
+                        Icons.add,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
-                    ],
-                  )),
-              const Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Divider(
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
-              ),
-            ]),
-            Comments(id),
-            Padding(
-              padding: EdgeInsets.only(bottom: 50),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.white,
-                  onPressed: () {
-                    addComment(context);
-                  },
-                  child: Icon(
-                    Icons.add,
-                    color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ]),
+              ]),
         ));
-    ;
   }
 }

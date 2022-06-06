@@ -42,9 +42,6 @@ class _PersonPostsState extends State<PersonPosts> {
       for (var p in jsonData['data']) {
         var is_authuser = false;
 
-        if (p['username'] == widget.username) {
-          is_authuser = true;
-        }
         var date = DateTime.fromMillisecondsSinceEpoch(p['date']);
         var post = Post(
             id: p['id'],

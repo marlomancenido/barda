@@ -89,9 +89,10 @@ Future<List<String>> getFriends() async {
   final token = await Auth.getToken();
 
   // Query
-  // Map<String, dynamic> query = {'friends': 'true'};
+  Map<String, dynamic> query = {'friends': 'true'};
 
-  final uri = Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/user');
+  final uri =
+      Uri.https('cmsc-23-2022-bfv6gozoca-as.a.run.app', '/api/user', query);
   final res = await http.get(
     uri,
     headers: <String, String>{
@@ -141,7 +142,7 @@ Future getUserData(String username) async {
   // 0 - Not Friends, 1 - Friends, 2 - isAuthUser
   int friend_stat = 0;
 
-  if (friends.contains(auth_user)) {
+  if (friends.contains(username)) {
     friend_stat = 1;
   } else if (auth_user == username) {
     friend_stat = 2;

@@ -37,7 +37,7 @@ class _PersonState extends State<Person> {
 
     var jsonData = jsonDecode(res.body);
 
-    if (res.statusCode == 200) {
+    if (jsonData['success']) {
       setState(() {
         Navigator.pop(context);
         Navigator.of(context).push(
@@ -156,7 +156,7 @@ class _PersonState extends State<Person> {
                             color: Theme.of(context).colorScheme.secondary),
                       ),
                       Text(
-                        '@$username • $display_followers friends',
+                        '@$username',
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -173,6 +173,7 @@ class _PersonState extends State<Person> {
                               onPressed: () async {
                                 var response = await followuser();
                                 if (response['success']) {
+                                  is_following = 1;
                                   showSuccess(context,
                                       'Successfully followed @$username!');
                                 } else {
