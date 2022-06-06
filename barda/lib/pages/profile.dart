@@ -219,12 +219,11 @@ class _ProfileState extends State<Profile> {
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               primary: Colors.white,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  2000)))),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(
+                                                              2000)))),
                                           child: Padding(
                                             padding: const EdgeInsets.all(15),
                                             child: Text(

@@ -64,9 +64,9 @@ class _ChangePassState extends State<ChangePass> {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                       primary: Colors.white,
-                      shape: const RoundedRectangleBorder(
+                      shape: RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.all(Radius.circular(2000)))),
+                              const BorderRadius.all(Radius.circular(2000)))),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -226,9 +226,9 @@ class _ChangePassState extends State<ChangePass> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.white,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2000)))),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(2000)))),
                         child: Padding(
                           padding: const EdgeInsets.all(15),
                           child: Text(

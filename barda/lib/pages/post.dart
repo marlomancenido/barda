@@ -359,9 +359,9 @@ class _PostPageState extends State<PostPage> {
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.white,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(2000)))),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(2000)))),
                         onPressed: () {
                           Navigator.pop(context);
                         },

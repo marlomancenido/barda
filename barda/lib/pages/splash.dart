@@ -177,8 +177,8 @@ class _SplashState extends State<Splash> {
                                 alignment: Alignment.centerLeft,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.primary,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(2000)))),
                             child: const Padding(
                               padding: EdgeInsets.only(left: 10, right: 10),

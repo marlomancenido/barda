@@ -142,8 +142,8 @@ class _PersonState extends State<Person> {
                                 child: ElevatedButton.icon(
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.white,
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(2000)))),
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -180,8 +180,8 @@ class _PersonState extends State<Person> {
                           ? ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.white,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: const BorderRadius.all(
                                           Radius.circular(2000)))),
                               onPressed: () async {
                                 var response = await followuser();
@@ -211,8 +211,8 @@ class _PersonState extends State<Person> {
                               ? ElevatedButton.icon(
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.grey,
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(2000)))),
                                   onPressed: () async {
                                     var response = await unfollow();
