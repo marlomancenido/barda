@@ -64,36 +64,46 @@ class _Feed extends State<Feed> {
               p['username'] == username) {
             temp_posts.add(post);
           }
-          setState(() {
-            lastid = p['id'];
-          });
+          if (mounted) {
+            setState(() {
+              lastid = p['id'];
+            });
+          }
         }
 
-        setState(() {
-          posts.addAll(temp_posts);
-          if (posts.length < limit) {
-            getPosts();
-          }
-        });
+        if (mounted) {
+          setState(() {
+            posts.addAll(temp_posts);
+            if (posts.length < limit) {
+              getPosts();
+            }
+          });
+        }
       } else {
+        if (mounted) {
+          setState(() {
+            hasMore = false;
+          });
+        }
+      }
+    } else {
+      if (mounted) {
         setState(() {
           hasMore = false;
         });
       }
-    } else {
-      setState(() {
-        hasMore = false;
-      });
     }
   }
 
   Future refreshFeed() async {
-    setState(() {
-      hasMore = true;
-      posts.clear();
-      getPosts();
-      lastid = '';
-    });
+    if (mounted) {
+      setState(() {
+        hasMore = true;
+        posts.clear();
+        getPosts();
+        lastid = '';
+      });
+    }
   }
 
   @override
