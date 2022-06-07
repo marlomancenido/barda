@@ -1,5 +1,5 @@
+![Barda icon](barda/ios/Runner/Assets.xcassets/AppIcon.appiconset/48.png)
 ### Project by Marlo Fiel Mancenido (X-3L)
-
 # barda - a social media app
 barda is a social media application developed in Flutter. It uses elements from both the Material UI package and Cupertino package. It connects through the provided API for CRUD actions. 
 
