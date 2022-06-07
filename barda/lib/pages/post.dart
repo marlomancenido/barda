@@ -302,13 +302,16 @@ class _PostPageState extends State<PostPage> {
                                   controller.text, widget.post.id);
 
                               if (response['success']) {
-                                setState(() {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          PostPage(widget.post)));
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PostPage(widget.post)));
+                                  });
+                                }
                                 showSuccess(context, "Comment submitted.");
                               } else {
                                 var statusCode = response['statusCode'];
