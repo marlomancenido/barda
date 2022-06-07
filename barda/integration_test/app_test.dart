@@ -42,10 +42,10 @@ void main() {
       await tester.tap(reg_pass);
       await tester.enterText(reg_pass, 'password');
       await tester.tap(reg_submit);
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(Duration(milliseconds: 2400));
 
       await tester.pumpAndSettle();
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(Duration(milliseconds: 2400));
 
       // Should return an error since this user is already existing
       expect(find.byKey(const Key('error_snbar')), findsOneWidget);
@@ -70,9 +70,9 @@ void main() {
       await tester.tap(loginPW);
       await tester.enterText(loginPW, 'password2');
       await tester.tap(submitbutton);
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(Duration(milliseconds: 2400));
       await tester.pumpAndSettle();
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(Duration(milliseconds: 2400));
 
       // Expecting an error since the password is incorrect
       expect(find.byKey(Key('error_snbar')), findsOneWidget);
@@ -96,14 +96,10 @@ void main() {
       await tester.enterText(loginUN, 'user1');
       await tester.tap(loginPW);
       await tester.enterText(loginPW, 'password');
-      await Future.delayed(Duration(milliseconds: 300));
-
+      await Future.delayed(Duration(milliseconds: 2400));
       await tester.tap(submitbutton);
-      await tester.pump();
-      await tester.pump();
-      await tester.pump();
-
-      // await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(milliseconds: 2400));
 
       // Expecting no errors since the password is correct
       expect(find.byKey(Key('error_snbar')), findsNothing);
@@ -140,10 +136,6 @@ void main() {
     testWidgets('> Making a comment (😀)', (tester) async {
       app.main();
       await tester.pumpAndSettle();
-      // await tester.pump();
-      // await tester.pump();
-      // await tester.pump();
-      // await tester.pump();
 
       final postcntr = find.byKey(Key('post_cntr'));
       await tester.tap(postcntr.first);
@@ -276,7 +268,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final friendcard = find.byKey(Key('friendcard'));
-      await tester.tap(friendcard);
+      await tester.tap(friendcard.first);
       await tester.pumpAndSettle();
 
       final unfollow = find.byKey(Key('unfollow_btn'));
@@ -317,7 +309,7 @@ void main() {
       await tester.tap(newpass_c);
       await tester.enterText(newpass_c, 'newpass');
       await tester.tap(submit);
-      await Future.delayed(Duration(milliseconds: 300));
+      await Future.delayed(Duration(milliseconds: 800));
       await tester.pumpAndSettle();
 
       expect(find.byKey(Key('error_snbar')), findsOneWidget);
